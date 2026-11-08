@@ -36,8 +36,15 @@ Note: Tajawal lacks some isolated Arabic presentation forms → use Noto Sans Ar
 
 ## Local preview
 ```bash
+./serve.sh 12000          # runs detached (setsid+nohup); survives shell exit
+# or manually:
 python3 -m http.server 12000
 ```
+
+**Gotcha:** a foreground `python3 -m http.server` dies when the shell session ends,
+which makes the public preview URL (`work-1-*.prod-runtime.all-hands.dev`) return
+**502 Bad Gateway / "no available server"**. Always start it detached (see `serve.sh`).
+This preview URL is also ephemeral (tied to the sandbox) — real hosting is GitHub Pages.
 
 ## Publishing
 Target: GitHub Pages repo `enmohammedanwr-coder/resume-website` → `https://enmohammedanwr-coder.github.io/resume-website/`
