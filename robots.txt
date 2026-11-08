@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://enmohammedanwr-coder.github.io/resume-website/sitemap.xml
