@@ -9,7 +9,7 @@ pkill -f "http.server ${PORT}" 2>/dev/null
 sleep 1
 
 cd "$DIR" || exit 1
-setsid nohup python3 -m http.server "$PORT" --bind 0.0.0.0 > /tmp/webserver.log 2>&1 < /dev/null &
+setsid nohup python3 serve.py "$PORT" > /tmp/webserver.log 2>&1 < /dev/null &
 sleep 1
 
 if curl -sf -o /dev/null "http://localhost:${PORT}/"; then

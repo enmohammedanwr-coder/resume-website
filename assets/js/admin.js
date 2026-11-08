@@ -43,19 +43,41 @@ function setField(path, value) { setPath(rootFor(path), path, value); }
 function getField(path) { return getPath(rootFor(path), path); }
 
 /* ---------- Login gate ---------- */
+// Normalise a password so that letter variants match: trims spaces, lowercases,
+// and unifies alef forms (أ إ آ → ا) + ta marbuta/haa (ة → ه).
+function normPass(s) {
+  return String(s == null ? '' : s)
+    .trim()
+    .toLowerCase()
+    .replace(/[\u0623\u0625\u0622]/g, '\u0627')
+    .replace(/\u0629/g, '\u0647');
+}
+// While the password is still the default, accept the Arabic transliteration
+// "ادمن" too, so users on an Arabic keyboard are not locked out. Once the owner
+// changes the password, only the stored value is accepted.
+const DEFAULT_PASS = 'admin';
+const DEFAULT_PASS_AR = '\u0627\u062f\u0645\u0646';
+function passMatches(entered, stored) {
+  const e = normPass(entered);
+  if (!e) return false;
+  if (e === normPass(stored)) return true;
+  const storedIsDefault = normPass(stored) === normPass(DEFAULT_PASS);
+  return storedIsDefault && e === normPass(DEFAULT_PASS_AR);
+}
+
 function initGate() {
   const gate = $('#gate');
   const input = $('#gatePass');
   const err = $('#gateErr');
-  const pass = localStorage.getItem(LS_PASS) || 'admin';
+  const stored = localStorage.getItem(LS_PASS) || DEFAULT_PASS;
 
   const tryLogin = () => {
-    if (input.value === pass) {
+    if (passMatches(input.value, stored)) {
       gate.hidden = true;
       $('#app').hidden = false;
       initEditor();
     } else {
-      err.textContent = 'كلمة المرور غير صحيحة.';
+      err.textContent = 'كلمة المرور غير صحيحة. جرّب: admin';
       input.value = '';
       input.focus();
     }

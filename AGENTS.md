@@ -36,14 +36,17 @@ Note: Tajawal lacks some isolated Arabic presentation forms → use Noto Sans Ar
 
 ## Local preview
 ```bash
-./serve.sh 12000          # runs detached (setsid+nohup); survives shell exit
+./serve.sh 12000          # runs serve.py detached (setsid+nohup); survives shell exit
 # or manually:
-python3 -m http.server 12000
+python3 serve.py 12000
 ```
+`serve.py` (not `python -m http.server`) is used on purpose: it sends
+`Cache-Control: no-store`, otherwise the browser caches `admin.js`/`app.js` and
+edits look "not applied" until a hard refresh.
 
-**Gotcha:** a foreground `python3 -m http.server` dies when the shell session ends,
-which makes the public preview URL (`work-1-*.prod-runtime.all-hands.dev`) return
-**502 Bad Gateway / "no available server"**. Always start it detached (see `serve.sh`).
+**Gotcha:** a foreground server dies when the shell session ends, which makes the
+public preview URL (`work-1-*.prod-runtime.all-hands.dev`) return **502 Bad Gateway /
+"no available server"**. Always start it detached (see `serve.sh`).
 This preview URL is also ephemeral (tied to the sandbox) — real hosting is GitHub Pages.
 
 ## Publishing
