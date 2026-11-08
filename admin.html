@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة التحكم | محمد أنور عمران</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/admin.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23060b18'/%3E%3Ctext x='50' y='68' font-size='58' font-family='Arial' font-weight='bold' fill='%2338bdf8' text-anchor='middle'%3E%E2%9A%99%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <!-- ============ LOGIN GATE ============ -->
+  <div class="gate" id="gate">
+    <div class="gate__card">
+      <div class="gate__logo">⚙</div>
+      <h1>لوحة تحكم الموقع</h1>
+      <p class="gate__sub">أدخل كلمة المرور للدخول إلى محرّر المحتوى</p>
+      <div class="field">
+        <input type="password" id="gatePass" placeholder="كلمة المرور" autocomplete="current-password" />
+        <small class="gate__err" id="gateErr"></small>
+      </div>
+      <button class="btn btn--primary btn--block" id="gateBtn">دخول</button>
+      <p class="gate__hint">كلمة المرور الافتراضية: <code>admin</code> — يمكنك تغييرها من تبويب «الإعدادات» بعد الدخول.</p>
+      <p class="gate__note">⚠️ هذه حماية بسيطة داخل المتصفح لصدّ العابرين فقط، وليست حماية أمنية حقيقية.</p>
+    </div>
+  </div>
+
+  <!-- ============ EDITOR ============ -->
+  <div class="app" id="app" hidden>
+    <header class="topbar">
+      <div class="topbar__left">
+        <span class="topbar__logo">⚙</span>
+        <strong>محرّر الموقع</strong>
+      </div>
+
+      <div class="topbar__center">
+        <div class="seg" id="langSeg" role="tablist">
+          <button class="seg__btn is-active" data-editor-lang="ar">العربية</button>
+          <button class="seg__btn" data-editor-lang="en">English</button>
+        </div>
+      </div>
+
+      <div class="topbar__right">
+        <span class="save-state" id="saveState"></span>
+        <button class="btn btn--ghost btn--sm" id="previewBtn">👁 معاينة</button>
+        <button class="btn btn--ghost btn--sm" id="resetBtn">↺ استرجاع</button>
+        <button class="btn btn--primary btn--sm" id="publishBtn">🚀 نشر</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="side">
+        <nav class="side__nav" id="sideNav"></nav>
+      </aside>
+
+      <main class="main" id="main"></main>
+    </div>
+  </div>
+
+  <!-- ============ PUBLISH MODAL ============ -->
+  <div class="modal" id="publishModal" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__dialog">
+      <button class="modal__close" data-close aria-label="إغلاق">&times;</button>
+      <h2>النشر على الإنترنت (GitHub)</h2>
+      <p class="muted">ينشر التعديلات مباشرة إلى مستودعك على GitHub، فتظهر على موقعك خلال دقيقة تقريباً.</p>
+
+      <div class="field"><label>اسم المستخدم / المنظمة على GitHub</label>
+        <input id="ghOwner" placeholder="enmohammedanwr-coder" /></div>
+      <div class="field"><label>اسم المستودع</label>
+        <input id="ghRepo" placeholder="resume-website" /></div>
+      <div class="field"><label>الفرع (Branch)</label>
+        <input id="ghBranch" placeholder="main" value="main" /></div>
+      <div class="field"><label>رمز الوصول الشخصي (Token)</label>
+        <input id="ghToken" type="password" placeholder="ghp_..." autocomplete="off" />
+        <small class="muted">يُنشأ من GitHub ← Settings ← Developer settings ← Personal access tokens، مع صلاحية <b>repo</b>. يُحفظ في متصفحك فقط ولا يُرسل لأي مكان غير GitHub.</small></div>
+
+      <div class="modal__actions">
+        <button class="btn btn--ghost" data-close>إلغاء</button>
+        <button class="btn btn--primary" id="doPublish">نشر الآن</button>
+      </div>
+      <div class="publish-log" id="publishLog"></div>
+    </div>
+  </div>
+
+  <!-- ============ SETTINGS MODAL ============ -->
+  <div class="modal" id="settingsModal" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__dialog">
+      <button class="modal__close" data-close aria-label="إغلاق">&times;</button>
+      <h2>الإعدادات</h2>
+
+      <h3 class="h3">تغيير كلمة المرور</h3>
+      <div class="field"><label>كلمة المرور الجديدة</label><input id="newPass" type="password" /></div>
+      <button class="btn btn--ghost btn--sm" id="savePass">حفظ كلمة المرور</button>
+
+      <h3 class="h3">بيانات التواصل</h3>
+      <div class="field"><label>رقم الهاتف / واتساب</label><input id="setPhone" /></div>
+      <div class="field"><label>البريد الإلكتروني الأول</label><input id="setEmail1" /></div>
+      <div class="field"><label>البريد الإلكتروني الثاني</label><input id="setEmail2" /></div>
+      <div class="field"><label>رابط GitHub</label><input id="setGithub" /></div>
+      <div class="field"><label>رابط LinkedIn</label><input id="setLinkedin" /></div>
+      <div class="field"><label>رابط X / Twitter</label><input id="setTwitter" /></div>
+      <div class="field"><label>رابط إرسال نموذج التواصل (Formspree / Web3Forms)</label>
+        <input id="setEndpoint" placeholder="https://formspree.io/f/xxxxxxx" /></div>
+
+      <div class="modal__actions">
+        <button class="btn btn--ghost" data-close>إغلاق</button>
+        <button class="btn btn--primary" id="saveSettings">حفظ الإعدادات</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

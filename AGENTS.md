@@ -6,15 +6,21 @@ Static personal portfolio + CV website for **Mohammed Anwar Yahya Ahmed Omran**
 
 ## Layout
 - `index.html` — single page, all sections (hero, about, projects, services, skills, qualifications, why, contact).
+- `admin.html` — **admin panel** (password gate → editor → publish to GitHub). `noindex`.
 - `assets/css/style.css` — full design system (tokens, dark/light, RTL/LTR, responsive).
+- `assets/css/admin.css` — admin panel styling (same palette).
 - `assets/js/data.js` — **all content** in one place (`SITE_DATA`, keys `ar` / `en` / `meta`).
-- `assets/js/app.js` — i18n, theme, rendering, modal, form validation, particles.
+- `assets/js/app.js` — i18n, theme, rendering, modal, form validation, particles. Supports `?preview=1` (loads `siteDraft` from localStorage).
+- `assets/js/admin.js` — admin logic: edit AR/EN, image upload (canvas → JPEG dataURL, max 1400px), item CRUD, draft autosave to `localStorage.siteDraft`, `generateDataJS()`, `extractImages()`, GitHub publish via Contents API.
 - `assets/img/` — generated project covers + `profile.jpg` placeholder.
 - `assets/cv/Mohammed-Anwar-CV.pdf` — generated CV.
 - `make_images.py`, `make_cv.py` — regenerate images / CV.
 
 ## Editing content
-Edit `assets/js/data.js` only. Never hardcode text in `index.html`.
+Two ways:
+1. **Admin panel** `admin.html` (default password `admin`, stored in `localStorage.adminPass`).
+   Draft → `localStorage.siteDraft`; preview at `index.html?preview=1`; publish pushes `data.js` + images + site files via GitHub Contents API.
+2. Directly edit `assets/js/data.js`. Never hardcode text in `index.html`.
 
 ## Contact form
 No fake success. Real sending requires `meta.formEndpoint` (Formspree/Web3Forms).
@@ -35,7 +41,9 @@ python3 -m http.server 12000
 
 ## Publishing
 Target: GitHub Pages repo `enmohammedanwr-coder/resume-website` → `https://enmohammedanwr-coder.github.io/resume-website/`
-`.nojekyll` is present (needed for `assets/` paths). SEO files: `robots.txt`, `sitemap.xml`, `404.html`.
+`.nojekyll` is present (needed for `assets/` paths). SEO files: `robots.txt` (disallows `/admin.html`), `sitemap.xml`, `404.html`.
+
+Primary path for the user: **admin.html → 🚀 نشر** (needs a classic PAT with `repo` scope).
 
 **Env caveat:** the provided `GITHUB_TOKEN` here is a GitHub *App installation* token
 (`ghu_` prefix, `x-oauth-scopes` empty) — it can read user info but **cannot create

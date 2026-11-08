@@ -456,7 +456,16 @@ function initParticles() {
 
 /* ---------- Init ---------- */
 function init() {
-  state.data = window.SITE_DATA;
+  // Draft preview: admin panel opens index.html?preview=1 to show unsaved edits
+  const isPreview = new URLSearchParams(location.search).has('preview');
+  let data = window.SITE_DATA;
+  if (isPreview) {
+    try {
+      const draft = JSON.parse(localStorage.getItem('siteDraft'));
+      if (draft) data = draft;
+    } catch (e) { /* keep original */ }
+  }
+  state.data = data;
   applyTheme();
   render();
   onScroll();
