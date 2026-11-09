@@ -34,19 +34,6 @@ code { font-family: var(--mono); background: var(--surface-2); padding: .1rem .4
 .muted { color: var(--text-dim); font-size: .86rem; }
 .h3 { font-size: 1.05rem; margin: 1.4rem 0 .8rem; padding-inline-start: .7rem; border-inline-start: 3px solid var(--brand-2); }
 
-/* ---------- Login gate ---------- */
-.gate { position: fixed; inset: 0; display: grid; place-items: center; padding: 1.5rem;
-  background: radial-gradient(1000px 600px at 30% 0%, rgba(47,124,246,.18), transparent 60%), var(--bg); }
-.gate__card { width: min(420px, 100%); background: var(--bg-elev); border: 1px solid var(--border);
-  border-radius: 22px; padding: 2rem 1.8rem; box-shadow: 0 30px 80px rgba(2,10,30,.6); text-align: center; }
-.gate__logo { width: 62px; height: 62px; margin: 0 auto 1rem; border-radius: 18px; display: grid; place-items: center;
-  font-size: 1.7rem; background: var(--brand-grad); color: #04122b; }
-.gate h1 { font-size: 1.35rem; margin: 0 0 .3rem; }
-.gate__sub { color: var(--text-soft); font-size: .92rem; margin: 0 0 1.4rem; }
-.gate__err { color: #f87171; font-size: .82rem; min-height: 1.1em; display: block; margin-top: .4rem; }
-.gate__hint { color: var(--text-dim); font-size: .8rem; margin: 1rem 0 .3rem; }
-.gate__note { color: #f0a35e; font-size: .76rem; margin: 0; }
-
 /* ---------- Top bar ---------- */
 .topbar { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 1rem;
   padding: .6rem 1rem; background: color-mix(in srgb, var(--bg) 88%, transparent);

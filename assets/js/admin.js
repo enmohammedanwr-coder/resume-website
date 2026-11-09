@@ -9,7 +9,6 @@ const ICON_OPTIONS = ['web','code','android','database','building','analysis','d
   'repair','manage','ai','security','solution','thinking','details','team','learn','hybrid'];
 
 const LS_DRAFT = 'siteDraft';
-const LS_PASS = 'adminPass';
 const LS_GH = 'ghPublish';
 
 /* ---------- State ---------- */
@@ -41,51 +40,6 @@ function rootFor(path) {
 }
 function setField(path, value) { setPath(rootFor(path), path, value); }
 function getField(path) { return getPath(rootFor(path), path); }
-
-/* ---------- Login gate ---------- */
-// Normalise a password so that letter variants match: trims spaces, lowercases,
-// and unifies alef forms (أ إ آ → ا) + ta marbuta/haa (ة → ه).
-function normPass(s) {
-  return String(s == null ? '' : s)
-    .trim()
-    .toLowerCase()
-    .replace(/[\u0623\u0625\u0622]/g, '\u0627')
-    .replace(/\u0629/g, '\u0647');
-}
-// While the password is still the default, accept the Arabic transliteration
-// "ادمن" too, so users on an Arabic keyboard are not locked out. Once the owner
-// changes the password, only the stored value is accepted.
-const DEFAULT_PASS = 'admin';
-const DEFAULT_PASS_AR = '\u0627\u062f\u0645\u0646';
-function passMatches(entered, stored) {
-  const e = normPass(entered);
-  if (!e) return false;
-  if (e === normPass(stored)) return true;
-  const storedIsDefault = normPass(stored) === normPass(DEFAULT_PASS);
-  return storedIsDefault && e === normPass(DEFAULT_PASS_AR);
-}
-
-function initGate() {
-  const gate = $('#gate');
-  const input = $('#gatePass');
-  const err = $('#gateErr');
-  const stored = localStorage.getItem(LS_PASS) || DEFAULT_PASS;
-
-  const tryLogin = () => {
-    if (passMatches(input.value, stored)) {
-      gate.hidden = true;
-      $('#app').hidden = false;
-      initEditor();
-    } else {
-      err.textContent = 'كلمة المرور غير صحيحة. جرّب: admin';
-      input.value = '';
-      input.focus();
-    }
-  };
-  $('#gateBtn').addEventListener('click', tryLogin);
-  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryLogin(); });
-  input.focus();
-}
 
 /* ---------- Draft load / save ---------- */
 function loadDraft() {
@@ -540,13 +494,6 @@ function bindSettings() {
     closeModal('#settingsModal');
     toast('تم حفظ الإعدادات', 'ok');
   });
-  $('#savePass').addEventListener('click', () => {
-    const p = $('#newPass').value.trim();
-    if (p.length < 4) { toast('كلمة المرور قصيرة جداً (4 أحرف على الأقل)', 'err'); return; }
-    localStorage.setItem(LS_PASS, p);
-    $('#newPass').value = '';
-    toast('تم تغيير كلمة المرور', 'ok');
-  });
 }
 
 /* ---------- Generate data.js ---------- */
@@ -732,4 +679,4 @@ function initEditor() {
 }
 
 /* ---------- Boot ---------- */
-initGate();
+initEditor();

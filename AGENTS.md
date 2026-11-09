@@ -6,7 +6,7 @@ Static personal portfolio + CV website for **Mohammed Anwar Yahya Ahmed Omran**
 
 ## Layout
 - `index.html` — single page, all sections (hero, about, projects, services, skills, qualifications, why, contact).
-- `admin.html` — **admin panel** (password gate → editor → publish to GitHub). `noindex`.
+- `admin.html` — **admin panel** (editor → publish to GitHub). No password gate. `noindex`.
 - `assets/css/style.css` — full design system (tokens, dark/light, RTL/LTR, responsive).
 - `assets/css/admin.css` — admin panel styling (same palette).
 - `assets/js/data.js` — **all content** in one place (`SITE_DATA`, keys `ar` / `en` / `meta`).
@@ -18,7 +18,7 @@ Static personal portfolio + CV website for **Mohammed Anwar Yahya Ahmed Omran**
 
 ## Editing content
 Two ways:
-1. **Admin panel** `admin.html` (default password `admin`, stored in `localStorage.adminPass`).
+1. **Admin panel** `admin.html` (opens directly, no password).
    Draft → `localStorage.siteDraft`; preview at `index.html?preview=1`; publish pushes `data.js` + images + site files via GitHub Contents API.
 2. Directly edit `assets/js/data.js`. Never hardcode text in `index.html`.
 
