@@ -59,3 +59,10 @@ Primary path for the user: **admin.html → 🚀 نشر** (needs a classic PAT w
 (`ghu_` prefix, `x-oauth-scopes` empty) — it can read user info but **cannot create
 repositories** (`Resource not accessible by integration`, 403). To publish, the user must
 create the repo themselves (web UI) or use a token with `repo` scope.
+
+## النشر (Deployment)
+
+- المستودع: https://github.com/enmohammedanwr-coder/resume-website (عام، فرع `main`)
+- الموقع المنشور: https://enmohammedanwr-coder.github.io/resume-website/
+- GitHub Pages: مُفعّل من فرع `main` / الجذر `/`، HTTPS مُفعّل.
+- ملف `.nojekyll` موجود لتعطيل معالجة Jekyll.
