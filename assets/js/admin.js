@@ -632,6 +632,16 @@ function openPreview() {
   window.open('index.html?preview=1', '_blank');
 }
 
+/* ---------- Apply edits (make visible on the site, before publishing) ---------- */
+// Save the draft and open the site with ?preview=1 so the user can verify the
+// changes on the real homepage. Nothing is uploaded to GitHub until they press
+// "نشر" (publish).
+function applyChanges() {
+  saveDraft();
+  window.open('index.html?preview=1', '_blank');
+  toast('تم تطبيق التعديلات — راجعها في الرئيسية ثم اضغط «نشر»', 'ok');
+}
+
 /* ---------- Init ---------- */
 function initEditor() {
   state.draft = loadDraft();
@@ -649,6 +659,8 @@ function initEditor() {
   });
 
   $('#previewBtn').addEventListener('click', openPreview);
+  $('#applyBtn').addEventListener('click', () => openModal('#applyModal'));
+  $('#confirmApply').addEventListener('click', () => { closeModal('#applyModal'); applyChanges(); });
   $('#resetBtn').addEventListener('click', () => {
     if (!confirm('سيتم استرجاع المحتوى الأصلي وإلغاء كل التعديلات. متابعة؟')) return;
     localStorage.removeItem(LS_DRAFT);

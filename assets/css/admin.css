@@ -61,6 +61,8 @@ code { font-family: var(--mono); background: var(--surface-2); padding: .1rem .4
 .btn--ghost:hover { border-color: var(--border-strong); background: var(--surface-2); }
 .btn--danger { background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.4); color: #fca5a5; }
 .btn--danger:hover { background: rgba(239,68,68,.2); }
+.btn--apply { background: linear-gradient(135deg, #34d399, #10b981); color: #04241a; box-shadow: 0 8px 24px rgba(16,185,129,.3); }
+.btn--apply:hover { filter: brightness(1.05); }
 .btn--sm { padding: .5rem .9rem; font-size: .85rem; border-radius: 10px; }
 .btn--block { width: 100%; }
 .btn--xs { padding: .3rem .6rem; font-size: .78rem; border-radius: 8px; }
@@ -129,6 +131,7 @@ code { font-family: var(--mono); background: var(--surface-2); padding: .1rem .4
   box-shadow: 0 30px 80px rgba(2,10,30,.65); transform: translateY(16px); transition: transform .3s var(--ease); }
 .modal.open .modal__dialog { transform: none; }
 .modal__dialog h2 { margin: 0 0 .4rem; font-size: 1.25rem; }
+.modal__dialog--sm { width: min(440px, 100%); }
 .modal__close { position: absolute; top: .8rem; inset-inline-end: .8rem; width: 34px; height: 34px; border-radius: 9px;
   border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 1.3rem; cursor: pointer; }
 .modal__actions { display: flex; justify-content: flex-end; gap: .6rem; margin-top: 1rem; }

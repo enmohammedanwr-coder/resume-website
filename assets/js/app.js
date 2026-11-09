@@ -464,11 +464,21 @@ function init() {
       const draft = JSON.parse(localStorage.getItem('siteDraft'));
       if (draft) data = draft;
     } catch (e) { /* keep original */ }
+    showPreviewBanner();
   }
   state.data = data;
   applyTheme();
   render();
   onScroll();
   initParticles();
+}
+
+function showPreviewBanner() {
+  const el = document.createElement('div');
+  el.className = 'preview-banner';
+  el.setAttribute('dir', 'rtl');
+  el.innerHTML = '👁 <b>وضع المعاينة</b> — هذه تعديلاتك غير المنشورة. ' +
+    'لنشرها على الإنترنت ارجع إلى لوحة التحكم واضغط «🚀 نشر».';
+  document.body.appendChild(el);
 }
 init();

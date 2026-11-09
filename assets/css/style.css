@@ -457,6 +457,13 @@ html[data-theme="light"] .icon-moon { display: none; }
   html[dir="ltr"] .hero__badge { transform: translateX(50%); }
 }
 
+/* Draft preview banner (index.html?preview=1) — fixed at the bottom so it never
+   collides with the fixed header. */
+.preview-banner { position: fixed; inset-inline: 0; bottom: 0; z-index: 300; display: flex; align-items: center;
+  justify-content: center; gap: .4rem; flex-wrap: wrap; text-align: center; padding: .55rem 1rem;
+  font-size: .86rem; background: linear-gradient(135deg, #f59e0b, #f97316); color: #241000;
+  font-weight: 600; box-shadow: 0 -8px 24px rgba(0,0,0,.25); }
+
 /* Print */
 @media print {
   .header, .back-to-top, .bg-canvas, .hero__buttons, .contact__form, .scroll-cue { display: none !important; }

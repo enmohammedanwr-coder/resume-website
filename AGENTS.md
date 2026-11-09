@@ -18,7 +18,7 @@ Static personal portfolio + CV website for **Mohammed Anwar Yahya Ahmed Omran**
 
 ## Editing content
 Two ways:
-1. **Admin panel** `admin.html` (opens directly, no password).
+1. **Admin panel** `admin.html` (opens directly, no password). Buttons: 👁 preview, ✅ **تعديل البيانات** (confirm → apply draft to homepage via `index.html?preview=1`), ↺ reset, 🚀 publish.
    Draft → `localStorage.siteDraft`; preview at `index.html?preview=1`; publish pushes `data.js` + images + site files via GitHub Contents API.
 2. Directly edit `assets/js/data.js`. Never hardcode text in `index.html`.
 
