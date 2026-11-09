@@ -225,6 +225,17 @@ html[data-theme="light"] .icon-moon { display: none; }
 .hero__badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; animation: pulse 1.8s infinite; }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
 
+.code-card {
+  position: absolute; bottom: -34px; inset-inline-end: -10px; width: min(300px, 74vw);
+  background: color-mix(in srgb, var(--bg-elev) 92%, transparent); border: 1px solid var(--border);
+  border-radius: 16px; box-shadow: var(--shadow-md); overflow: hidden; backdrop-filter: blur(10px);
+}
+.code-card__bar { display: flex; gap: 6px; padding: .6rem .8rem; border-bottom: 1px solid var(--border); }
+.code-card__bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--border-strong); }
+.code-card__bar i:nth-child(1){ background:#ff5f57; } .code-card__bar i:nth-child(2){ background:#febc2e; } .code-card__bar i:nth-child(3){ background:#28c840; }
+.code-card pre { margin: 0; padding: .8rem .9rem; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .74rem; line-height: 1.7; color: var(--text-soft); direction: ltr; text-align: left; overflow-x: auto; }
+.c-key { color: #c792ea; } .c-str { color: #7ee787; }
+
 .scroll-cue { position: absolute; bottom: 22px; inset-inline-start: 50%; translate: -50% 0; width: 26px; height: 42px; border: 2px solid var(--border-strong); border-radius: 14px; display: grid; justify-items: center; padding-top: 7px; }
 .scroll-cue span { width: 4px; height: 8px; border-radius: 2px; background: var(--brand-2); animation: cue 1.6s infinite; }
 @keyframes cue { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(14px); opacity: 0; } }
@@ -417,6 +428,7 @@ html[data-theme="light"] .icon-moon { display: none; }
   .hero__title, .hero__tagline { max-width: 60ch; }
   .hero__buttons { justify-content: center; }
   .hero__media { order: -1; margin-bottom: 1rem; }
+  .code-card { position: static; margin-top: 1.5rem; inset: auto; }
   .about__grid { grid-template-columns: 1fr; }
   .qual__grid { grid-template-columns: 1fr; }
   .section__head { text-align: center; margin-inline: auto; }
