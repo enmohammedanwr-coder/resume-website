@@ -401,6 +401,78 @@ html[data-theme="light"] .icon-moon { display: none; }
 .modal__body h3 { margin: 0 0 .7rem; font-size: 1.4rem; }
 .modal__body .tags { margin-bottom: .9rem; }
 .modal__body p { color: var(--text-soft); margin: 0; }
+.modal__dialog--form { width: min(560px, 100%); padding: 1.6rem 1.6rem 1.8rem; }
+.modal__dialog--form h3 { margin: 0 0 .5rem; font-size: 1.3rem; padding-inline-end: 2.5rem; }
+.modal__dialog--form .muted { color: var(--text-dim); font-size: .92rem; margin: 0 0 1.1rem; }
+.modal__dialog--form .field { margin-bottom: .9rem; }
+.modal__dialog--form label { display: block; font-size: .9rem; margin-bottom: .35rem; color: var(--text-soft); }
+.modal__dialog--form input, .modal__dialog--form textarea {
+  width: 100%; padding: .75rem .9rem; border-radius: var(--radius-sm); border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-family: inherit; font-size: .95rem; resize: vertical;
+}
+.modal__dialog--form input:focus, .modal__dialog--form textarea:focus { outline: none; border-color: var(--brand-2); }
+.cv-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .4rem; }
+.cv-actions .btn { flex: 1 1 auto; justify-content: center; }
+.cv-have { margin: .9rem 0 0; font-size: .88rem; }
+.cv-have a { color: var(--brand-2); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Consent modal ---------- */
+.consent-list { margin: 0 0 1rem; padding-inline-start: 1.2rem; display: grid; gap: .5rem; }
+.consent-list li { color: var(--text-soft); font-size: .92rem; line-height: 1.6; }
+.consent-check {
+  display: flex; gap: .6rem; align-items: flex-start; margin-bottom: 1.1rem;
+  padding: .8rem .9rem; border-radius: var(--radius-sm);
+  background: var(--surface); border: 1px solid var(--border); font-size: .92rem; cursor: pointer;
+}
+.consent-check input { margin-top: .2rem; width: 1.05rem; height: 1.05rem; flex: none; accent-color: var(--brand-2); }
+.consent-check span { color: var(--text-soft); }
+
+/* ---------- Grades button ---------- */
+.icon-btn--text { width: auto; gap: .45rem; padding: 0 .8rem; }
+
+/* ---------- Grades panel (collapsible, hidden by default) ---------- */
+.grades-panel {
+  position: fixed; inset: 0; z-index: 190; display: grid; place-items: start center;
+  padding: clamp(.8rem, 4vw, 3rem) var(--gutter);
+  overflow-y: auto; background: rgba(2, 6, 18, .78); backdrop-filter: blur(8px);
+  opacity: 0; visibility: hidden; transition: opacity .35s var(--ease), visibility .35s;
+}
+.grades-panel.open { opacity: 1; visibility: visible; }
+.grades-panel__inner {
+  width: min(1080px, 100%); background: var(--bg-elev); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: clamp(1.1rem, 3vw, 2rem);
+  transform: translateY(-18px); transition: transform .4s var(--ease);
+}
+.grades-panel.open .grades-panel__inner { transform: none; }
+.grades-panel__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.2rem; }
+.grades-panel__title { margin: 0; font-size: clamp(1.25rem, 3vw, 1.7rem); }
+.grades-panel__subtitle { margin: .3rem 0 0; color: var(--text-dim); font-size: .92rem; }
+.grades-panel__close { width: 40px; height: 40px; flex: none; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 1.5rem; line-height: 1; }
+.grades-panel__close:hover { background: var(--surface-2); }
+
+.grade-level { margin-bottom: 1.4rem; }
+.grade-level__head {
+  display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: .4rem;
+  padding: .55rem .9rem; border-radius: var(--radius-sm); margin-bottom: .8rem;
+  background: var(--brand-grad); color: #04122b; font-weight: 800;
+}
+.grade-level__year { font-size: .82rem; font-weight: 700; opacity: .85; }
+.grade-sem { margin-bottom: 1rem; }
+.grade-sem__title { font-size: .98rem; font-weight: 700; margin: 0 0 .5rem; color: var(--text); display: flex; align-items: center; gap: .5rem; }
+.grade-sem__title::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--brand-2); flex: none; }
+.grade-sem__pending {
+  padding: .9rem 1rem; border-radius: var(--radius-sm); border: 1px dashed var(--border-strong);
+  background: var(--surface); color: var(--text-dim); font-size: .92rem; text-align: center;
+}
+.grade-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.grade-table th, .grade-table td { padding: .55rem .7rem; text-align: start; border-bottom: 1px solid var(--border); }
+.grade-table th { font-weight: 700; color: var(--text-soft); font-size: .82rem; text-transform: none; }
+.grade-table td.num, .grade-table th.num { text-align: center; width: 88px; font-variant-numeric: tabular-nums; }
+.grade-table td.grade-val { font-weight: 700; }
+.grade-badge { display: inline-block; padding: .18rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+.grade-badge--pass { background: rgba(34, 197, 94, .16); color: #22c55e; }
+.grade-badge--fail { background: rgba(239, 68, 68, .16); color: #ef4444; }
+.grade-sem__avg { margin-top: .5rem; font-size: .86rem; color: var(--text-dim); text-align: end; }
 
 /* ---------- Reveal animation ---------- */
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
@@ -443,6 +515,13 @@ html[data-theme="light"] .icon-moon { display: none; }
   .section__title { font-size: 1.6rem; }
   .hero__badge { inset-inline-start: 50%; transform: translateX(-50%); }
   html[dir="ltr"] .hero__badge { transform: translateX(50%); }
+  /* Grades panel: keep the button label, it is the main entry point */
+  .icon-btn--text { padding: 0 .55rem; }
+  .grade-table { font-size: .86rem; }
+  .grade-table th, .grade-table td { padding: .45rem .5rem; }
+  .grade-table td.num, .grade-table th.num { width: 62px; }
+  .grades-panel__head { flex-direction: column; }
+  .cv-actions .btn { flex: 1 1 100%; }
 }
 
 /* Draft preview banner (index.html?preview=1) — fixed at the bottom so it never

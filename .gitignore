@@ -2,3 +2,9 @@ __pycache__/
 *.pyc
 .DS_Store
 node_modules/
+
+# Build output (assembled by tools/build-site.py for Cloudflare Pages)
+public/
+
+# Private CV PDFs — uploaded to Cloudflare KV, never published/committed
+tools/cv/dist/

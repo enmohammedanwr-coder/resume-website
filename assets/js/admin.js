@@ -587,7 +587,7 @@ async function publish() {
     log('• جلب ملفات الموقع الحالية...');
     const files = ['index.html', 'admin.html', 'assets/css/style.css', 'assets/css/admin.css',
       'assets/js/app.js', 'assets/js/admin.js', 'README.md', 'robots.txt', 'sitemap.xml',
-      '404.html', '.nojekyll', 'assets/cv/Mohammed-Anwar-CV.pdf',
+      '404.html', '.nojekyll',
       'assets/img/profile.jpg', 'assets/img/project-airport.jpg', 'assets/img/project-traffic.jpg',
       'assets/img/project-guardian.jpg', 'assets/img/project-training.jpg'];
 

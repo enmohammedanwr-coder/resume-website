@@ -1,0 +1,141 @@
+{
+  "photo": "assets/img/profile.jpg",
+  "theme": {
+    "navy": "#0b1224",
+    "navySoft": "#101a33",
+    "brand": "#2f7cf6",
+    "brand2": "#38bdf8",
+    "accent": "#22d3ee",
+    "text": "#0b1b3a",
+    "muted": "#41527a",
+    "line": "#d7e3fb"
+  },
+  "ar": {
+    "dir": "rtl",
+    "lang": "ar",
+    "name": "محمد أنور يحي أحمد عمران",
+    "title": "خريج نظم معلومات حاسوبية | مطوّر برمجيات ومواقع وتطبيقات | متخصص في قواعد البيانات وتقنية المعلومات",
+    "contact": {
+      "phone": "+967 774 931 730",
+      "emails": ["m25647859@gmail.com", "En.mohammedanwr@gmail.com"],
+      "location": "اليمن",
+      "github": "github.com/enmohammedanwr-coder"
+    },
+    "sections": {
+      "profile": "النبذة الشخصية",
+      "education": "المؤهلات التعليمية",
+      "skills": "المهارات التقنية والشخصية",
+      "projects": "المشاريع",
+      "experience": "الخبرات العملية",
+      "languages": "اللغات",
+      "contact": "معلومات التواصل"
+    },
+    "profile": "خريج كلية الهندسة وتقنية المعلومات بجامعة عمران، حاصل على بكالوريوس في نظم المعلومات الحاسوبية عام 2022 بمعدل 85%. أجمع بين المعرفة التقنية والإدارية، وأعمل على تحويل المتطلبات إلى حلول برمجية منظّمة وقابلة للتطوير — من تحليل الأنظمة وتصميم قواعد البيانات إلى بناء المواقع والتطبيقات وتقديم الدعم الفني. أهتم بالتعلّم المستمر ومواكبة الأدوات التقنية الحديثة.",
+    "education": [
+      {
+        "title": "بكالوريوس نظم المعلومات الحاسوبية",
+        "org": "جامعة عمران — كلية الهندسة وتقنية المعلومات",
+        "meta": "سنة التخرج: 2022 | المعدل: 85%"
+      },
+      {
+        "title": "الثانوية العامة — القسم العلمي",
+        "org": "",
+        "meta": "المعدل: 72.21%"
+      }
+    ],
+    "skills": [
+      { "group": "لغات البرمجة", "items": ["C++", "C#", "Java", "PHP", "Python"] },
+      { "group": "تطوير الويب", "items": ["HTML", "CSS", "تصميم واجهات متجاوبة"] },
+      { "group": "قواعد البيانات", "items": ["SQL", "تصميم قواعد البيانات", "إدارة البيانات"] },
+      { "group": "تقنيات التطوير", "items": ["البرمجة كائنية التوجه OOP", "تطوير تطبيقات Android", "تحليل وتصميم النظم"] },
+      { "group": "تحليل البيانات", "items": ["SPSS", "Excel", "إعداد التقارير الإحصائية"] },
+      { "group": "مهارات شخصية", "items": ["التفكير التحليلي", "حل المشكلات", "العمل الجماعي", "إدارة الوقت والتنظيم", "الاهتمام بالتفاصيل", "التعلّم المستمر"] },
+      { "group": "مهارات أخرى", "items": ["صيانة الحاسوب والدعم الفني", "Microsoft Office", "أساسيات الأمن السيبراني"] }
+    ],
+    "projects": [
+      { "name": "مطار عمران الدولي", "tech": "C#", "desc": "نظام برمجي لتنظيم وإدارة العمليات التشغيلية والبيانات الخاصة بالمطار." },
+      { "name": "كشف حركات المرور", "tech": "Python", "desc": "تحليل بيانات حركة المرور وكشف الأنماط باستخدام لغة Python." },
+      { "name": "تطبيق الحارس الذكي", "tech": "Android", "desc": "تطبيق أندرويد يقدّم وظائف الحماية والمراقبة عبر الهاتف." },
+      { "name": "نظام مركز التدريب والتأهيل", "tech": "PHP", "desc": "نظام إدارة مراكز التدريب مع خاصية إصدار الشهادات." }
+    ],
+    "experience": [],
+    "experienceEmpty": "لا توجد خبرات عملية مُدرجة حالياً.",
+    "languages": [
+      { "name": "العربية", "level": "اللغة الأم", "value": 100 },
+      { "name": "الإنجليزية", "level": "دبلوم اللغة الإنجليزية — بمعدل 75%", "value": 75 }
+    ],
+    "certificates": [
+      "أربع شهادات شكر وتقدير من اللجان العلمية",
+      "شهادتان حضوريتان في مجال إدارة المشاريع PMP",
+      "دبلوم اللغة الإنجليزية النهائي بمعدل 75%",
+      "شهادتان في صيانة الحاسوب بمعدلي 90% و 88%"
+    ],
+    "certificatesTitle": "الشهادات والدورات",
+    "photoPlaceholder": "الصورة الشخصية",
+    "footer": "سيرة ذاتية — محمد أنور يحي أحمد عمران"
+  },
+  "en": {
+    "dir": "ltr",
+    "lang": "en",
+    "name": "Mohammed Anwar Yahya Ahmed Omran",
+    "title": "Computer Information Systems Graduate | Software, Web & App Developer | Databases & IT Specialist",
+    "contact": {
+      "phone": "+967 774 931 730",
+      "emails": ["m25647859@gmail.com", "En.mohammedanwr@gmail.com"],
+      "location": "Yemen",
+      "github": "github.com/enmohammedanwr-coder"
+    },
+    "sections": {
+      "profile": "Profile",
+      "education": "Education",
+      "skills": "Technical & Personal Skills",
+      "projects": "Projects",
+      "experience": "Work Experience",
+      "languages": "Languages",
+      "contact": "Contact"
+    },
+    "profile": "Graduate of the Faculty of Engineering and Information Technology at Amran University, holding a Bachelor's degree in Computer Information Systems (2022) with an 85% grade. I combine technical and managerial knowledge and turn requirements into organized, scalable software solutions — from systems analysis and database design to building websites, apps, and providing technical support. Committed to continuous learning and modern tools.",
+    "education": [
+      {
+        "title": "B.Sc. in Computer Information Systems",
+        "org": "Amran University — Faculty of Engineering & Information Technology",
+        "meta": "Graduation year: 2022 | GPA: 85%"
+      },
+      {
+        "title": "General Secondary Certificate — Scientific",
+        "org": "",
+        "meta": "GPA: 72.21%"
+      }
+    ],
+    "skills": [
+      { "group": "Programming Languages", "items": ["C++", "C#", "Java", "PHP", "Python"] },
+      { "group": "Web Development", "items": ["HTML", "CSS", "Responsive UI"] },
+      { "group": "Databases", "items": ["SQL", "Database Design", "Data Management"] },
+      { "group": "Development Techniques", "items": ["Object-Oriented Programming", "Android Development", "Systems Analysis & Design"] },
+      { "group": "Data Analysis", "items": ["SPSS", "Excel", "Statistical Reporting"] },
+      { "group": "Personal Skills", "items": ["Analytical Thinking", "Problem Solving", "Teamwork", "Time Management", "Attention to Detail", "Continuous Learning"] },
+      { "group": "Other Skills", "items": ["Computer Maintenance & Support", "Microsoft Office", "Cybersecurity Basics"] }
+    ],
+    "projects": [
+      { "name": "Amran International Airport", "tech": "C#", "desc": "A software system to organize and manage the airport's operations and data." },
+      { "name": "Traffic Movement Detection", "tech": "Python", "desc": "Analyzing traffic data and detecting patterns using Python." },
+      { "name": "Smart Guardian App", "tech": "Android", "desc": "An Android app providing protection and monitoring via phone." },
+      { "name": "Training & Rehabilitation Center System", "tech": "PHP", "desc": "A training-center management system with certificate issuance." }
+    ],
+    "experience": [],
+    "experienceEmpty": "No work experience listed yet.",
+    "languages": [
+      { "name": "Arabic", "level": "Native", "value": 100 },
+      { "name": "English", "level": "English Diploma — 75%", "value": 75 }
+    ],
+    "certificates": [
+      "Four appreciation certificates from scientific committees",
+      "Two attendance certificates in Project Management (PMP)",
+      "Final English Language Diploma — 75%",
+      "Two computer maintenance certificates — 90% & 88%"
+    ],
+    "certificatesTitle": "Certificates & Courses",
+    "photoPlaceholder": "Profile Photo",
+    "footer": "Curriculum Vitae — Mohammed Anwar Yahya Ahmed Omran"
+  }
+}

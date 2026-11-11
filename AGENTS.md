@@ -66,3 +66,32 @@ create the repo themselves (web UI) or use a token with `repo` scope.
 - الموقع المنشور: https://enmohammedanwr-coder.github.io/resume-website/
 - GitHub Pages: مُفعّل من فرع `main` / الجذر `/`، HTTPS مُفعّل.
 - ملف `.nojekyll` موجود لتعطيل معالجة Jekyll.
+
+## طلب تنزيل السيرة الذاتية (CV request flow)
+
+لا يوجد ملف PDF منشور للتنزيل المباشر. المسار:
+
+1. **طلب** — النموذج في الصفحة → `POST /api/cv-request` (اسم + بريد + سبب اختياري).
+   يخزّن الطلب في KV (`req:<id>` و `email:<hash>`)، ويرسل إشعاراً (اختياري).
+2. **موافقة المالك** — يفتح رابط `GET /api/cv-approve?req=<id>&k=<ADMIN_KEY>`،
+   فيتحول الطلب إلى `approved` ويُصدر رابط تنزيل موقّع.
+3. **تنزيل** — `GET /api/cv-download?token=<signed>&consent=1`؛ يتحقق من التوقيع
+   والصلاحية، يسجّل الموافقة، ثم يبثّ الـ PDF من KV (`pdf:ar` / `pdf:en`).
+
+الملفات والمسارات:
+- `functions/api/_lib.js` — توقيع HMAC، قراءة JSON، مساعدات KV، بريد اختياري، Turnstile.
+- `functions/api/_middleware.js` — CORS + ترويسات أمان + `OPTIONS`.
+- `functions/api/cv-request.js` — استقبال الطلب (honeypot، تحقق، حدّ معدّل).
+- `functions/api/cv-approve.js` — صفحة موافقة المالك (محمية بـ `ADMIN_KEY`).
+- `functions/api/cv-download.js` — التحقق ثم بثّ الـ PDF الخاص من KV.
+- `assets/js/cv-request.js` — نافذة الطلب + نافذة الموافقة/الشروط + `?cv=<token>`.
+- `tools/build-site.py` — يجمّع `public/` للنشر (Cloudflare Pages → `public`).
+- `tools/dev-server.mjs` — محاكي Pages محلي (ثابت + Functions + KV).
+- `tools/cv/publish-kv.py` — يرفع الـ PDF إلى KV (`pdf:ar`, `pdf:en`).
+
+المتطلبات على Cloudflare: ربط KV باسم `CV_KV`، ومتغيرات `ADMIN_KEY` و
+`TOKEN_SECRET` (واختياري `SITE_URL`, `MAIL_API_KEY`, `MAIL_FROM`, `NOTIFY_EMAIL`).
+التفاصيل الكاملة في `DEPLOY.md`.
+
+> مهم: ملفات الـ PDF تُبنى في `tools/cv/dist/` (خارج النشر ومُستثناة في
+> `.gitignore`) وتُرفع إلى KV فقط — لا تُرفع أبداً إلى GitHub Pages لأنها ستكون عامة.

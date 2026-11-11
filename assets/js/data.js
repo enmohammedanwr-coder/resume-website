@@ -8,7 +8,9 @@ const SITE_DATA = {
   /* بيانات عامة / Global */
   meta: {
     photo: "assets/img/profile.jpg",      // ضع صورتك هنا بنفس الاسم / put your photo here
-    cvFile: "assets/cv/Mohammed-Anwar-CV.pdf",
+    // عنوان واجهة الطلبات. اتركه فارغاً إذا كان الموقع والـ API على نفس النطاق
+    // (Cloudflare Pages). وإن كان الموقع على GitHub Pages، ضع هنا رابط الـ API.
+    apiBase: "",
     phone: "+967774931730",
     whatsapp: "967774931730",
     emails: ["m25647859@gmail.com", "En.mohammedanwr@gmail.com"],
@@ -41,7 +43,7 @@ const SITE_DATA = {
         projects: "تعرّف على مشاريعي",
         skills: "اكتشف مهاراتي",
         contact: "تواصل معي",
-        cv: "تحميل السيرة الذاتية PDF"
+        cv: "طلب تنزيل السيرة الذاتية PDF"
       }
     },
     about: {
@@ -189,6 +191,42 @@ const SITE_DATA = {
         errMessage: "الرجاء كتابة رسالة لا تقل عن 10 أحرف."
       }
     },
+    cvRequest: {
+      button: "طلب تنزيل السيرة الذاتية PDF",
+      title: "طلب تنزيل السيرة الذاتية (PDF)",
+      intro: "لا يتوفر ملف السيرة الذاتية للتنزيل المباشر. أرسل طلباً وسيصلني إشعار، وبعد موافقتي ستحصل على رابط تنزيل مؤقت.",
+      nameLabel: "اسمك الكامل",
+      namePh: "اكتب اسمك",
+      emailLabel: "بريدك الإلكتروني",
+      emailPh: "example@email.com",
+      reasonLabel: "سبب الطلب (اختياري)",
+      reasonPh: "مثال: للتقديم على وظيفة، أو لأغراض دراسية...",
+      submit: "إرسال الطلب",
+      sending: "جارٍ الإرسال...",
+      whatsapp: "تواصل عبر واتساب",
+      waText: "مرحباً، أرغب في طلب تنزيل سيرتك الذاتية (PDF).",
+      success: "تم إرسال طلبك بنجاح ✅ سيصل إلى صاحب السيرة، وعند الموافقة ستحصل على رابط تنزيل. يمكنك أيضاً التواصل عبر واتساب لتسريع الرد.",
+      notConfigured: "خدمة طلبات التنزيل غير مُفعّلة بعد. يمكنك التواصل مباشرة عبر واتساب أو البريد.",
+      error: "تعذّر إرسال الطلب حالياً. يمكنك التواصل مباشرة عبر واتساب.",
+      errName: "الرجاء إدخال اسمك.",
+      errEmail: "الرجاء إدخال بريد إلكتروني صحيح.",
+      haveToken: "لديك رمز موافقة بالفعل؟ تنزيل السيرة الذاتية"
+    },
+    cvConsent: {
+      title: "موافقة على استخدام السيرة الذاتية",
+      intro: "قبل تنزيل الملف، يُرجى قراءة الشروط والموافقة عليها.",
+      points: [
+        "يُستخدم هذا الملف لأغراض التوظيف أو التقييم الأكاديمي أو التعريف المهني فقط.",
+        "يُمنع إعادة نشر الملف أو بيعه أو تعديله دون إذن كتابي من صاحب السيرة.",
+        "البيانات الشخصية محمية، ويجب عدم استخدامها في أي غرض غير مشروع.",
+        "رابط التنزيل مؤقت ومرتبط بموافقتك، وقد يُلغى في أي وقت."
+      ],
+      agree: "أوافق على الشروط أعلاه وأتعهد باستخدام الملف للأغراض المذكورة فقط.",
+      download: "تنزيل السيرة الذاتية (PDF)",
+      cancel: "إلغاء",
+      noToken: "لا يوجد رمز موافقة صالح. يُرجى إرسال طلب تنزيل أولاً.",
+      downloading: "جارٍ بدء التنزيل..."
+    },
     footer: {
       rights: "جميع الحقوق محفوظة",
       built: "موقع شخصي احترافي",
@@ -218,7 +256,7 @@ const SITE_DATA = {
         projects: "Explore My Projects",
         skills: "Discover My Skills",
         contact: "Contact Me",
-        cv: "Download CV (PDF)"
+        cv: "Request CV (PDF)"
       }
     },
     about: {
@@ -365,6 +403,42 @@ const SITE_DATA = {
         errSubject: "Please enter the subject.",
         errMessage: "Please write a message of at least 10 characters."
       }
+    },
+    cvRequest: {
+      button: "Request CV (PDF) Download",
+      title: "Request the CV (PDF) Download",
+      intro: "The CV file is not available for direct download. Send a request and I will be notified; once I approve it, you will receive a temporary download link.",
+      nameLabel: "Your full name",
+      namePh: "Enter your name",
+      emailLabel: "Your email",
+      emailPh: "example@email.com",
+      reasonLabel: "Reason (optional)",
+      reasonPh: "e.g. applying for a job, academic use...",
+      submit: "Send request",
+      sending: "Sending...",
+      whatsapp: "Chat on WhatsApp",
+      waText: "Hello, I would like to request your CV (PDF).",
+      success: "Your request was sent successfully ✅ It will reach the CV owner, and once approved you will receive a download link. You can also chat on WhatsApp for a faster reply.",
+      notConfigured: "The download-request service is not activated yet. Please contact directly via WhatsApp or email.",
+      error: "Could not send the request now. Please contact via WhatsApp.",
+      errName: "Please enter your name.",
+      errEmail: "Please enter a valid email.",
+      haveToken: "Already have an approval code? Download the CV"
+    },
+    cvConsent: {
+      title: "CV Usage Consent",
+      intro: "Before downloading the file, please read and accept the terms.",
+      points: [
+        "This file is for recruitment, academic evaluation, or professional reference only.",
+        "Republishing, selling, or modifying the file without the owner's written permission is prohibited.",
+        "Personal data is protected and must not be used for any unlawful purpose.",
+        "The download link is temporary and tied to your consent; it may be revoked at any time."
+      ],
+      agree: "I accept the terms above and will use the file only for the stated purposes.",
+      download: "Download CV (PDF)",
+      cancel: "Cancel",
+      noToken: "No valid approval code. Please send a download request first.",
+      downloading: "Starting download..."
     },
     footer: {
       rights: "All rights reserved",

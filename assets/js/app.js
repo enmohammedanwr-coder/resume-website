@@ -66,9 +66,7 @@ function render() {
   // Nav
   $$('[data-nav]').forEach(el => { el.textContent = L.nav[el.dataset.nav]; });
 
-  // Hero buttons / cv
-  const cvBtn = $('#cvDownload');
-  if (cvBtn) { cvBtn.href = M.cvFile; cvBtn.setAttribute('download', ''); }
+  // Hero buttons
   $('#profilePhoto').src = M.photo;
   $('#langLabel').textContent = state.lang === 'ar' ? 'EN' : 'ع';
   $('#year').textContent = new Date().getFullYear();
