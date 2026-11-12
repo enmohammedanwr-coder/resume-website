@@ -154,3 +154,32 @@ code { font-family: var(--mono); background: var(--surface-2); padding: .1rem .4
   .side__link { white-space: nowrap; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
 }
+
+/* ---------- Login ---------- */
+.login { min-height: 100vh; display: grid; place-items: center; padding: 1.4rem; }
+.login__card { width: min(420px, 100%); background: var(--bg-soft); border: 1px solid var(--border);
+  border-radius: 20px; padding: 2rem; box-shadow: 0 24px 60px rgba(0,0,0,.45); text-align: center; }
+.login__logo { font-size: 2.4rem; display: block; margin-bottom: .4rem; }
+.login__card h1 { margin: 0 0 .3rem; font-size: 1.4rem; }
+.login__card .muted { margin: 0 0 1.2rem; }
+.login__card .field { text-align: start; }
+.login__msg { min-height: 1.3rem; margin: .8rem 0 0; color: #fca5a5; font-size: .88rem; }
+[hidden] { display: none !important; }
+
+/* ---------- CV requests ---------- */
+.req-filters { display: flex; gap: .4rem; }
+.req-list { display: grid; gap: .8rem; }
+.req { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); padding: .9rem 1rem; }
+.req__top { display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
+.req__meta { color: var(--text-dim); font-size: .84rem; margin-top: .15rem; }
+.req__reason { color: var(--text-soft); font-size: .88rem; margin-top: .5rem; padding: .5rem .7rem;
+  background: var(--surface-2); border-radius: 9px; }
+.req__actions { display: flex; gap: .5rem; margin-top: .7rem; }
+.badge { font-size: .74rem; font-weight: 700; border-radius: 999px; padding: .18rem .7rem; border: 1px solid var(--border-strong); }
+.badge.st-pending { color: #fcd34d; border-color: rgba(252,211,77,.45); background: rgba(252,211,77,.1); }
+.badge.st-approved { color: #6ee7b7; border-color: rgba(110,231,183,.45); background: rgba(110,231,183,.1); }
+.badge.st-rejected { color: #fca5a5; border-color: rgba(252,165,165,.45); background: rgba(252,165,165,.1); }
+
+/* ---------- CV file upload ---------- */
+.cvbox { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); padding: 1.1rem; }
+.cvbox__status { color: var(--text-soft); font-size: .9rem; margin: .3rem 0 .8rem; }

@@ -35,12 +35,23 @@ the CV **request → owner approval → consent → download** flow. The PDF is 
 
 مشروع Pages → **Settings → Environment variables** (Production + Preview):
 
-| Name             | Value                                  | الغرض |
-| ---------------- | -------------------------------------- | ----- |
-| `ADMIN_KEY`      | مفتاح سري طويل وعشوائي                 | يُستخدم في رابط الموافقة (تفتحه أنت فقط) |
-| `TOKEN_SECRET`   | مفتاح سري آخر (يمكن تركه ليأخذ قيمة ADMIN_KEY) | توقيع روابط التنزيل (HMAC) |
-| `SITE_URL`       | `https://<your-site>.pages.dev`        | يُستخدم في رابط الموافقة داخل الإشعار |
-| `TOKEN_TTL_HOURS`| `48` (اختياري)                          | صلاحية رابط التنزيل بالساعات |
+| Name                  | Value                                  | الغرض |
+| --------------------- | -------------------------------------- | ----- |
+| `ADMIN_PASSWORD_HASH` | `pbkdf2$<iters>$<saltB64>$<hashB64>`   | **كلمة مرور لوحة التحكم** (مُفضَّل — بصمة، لا نص صريح). أنشئها بـ `tools/admin/make-admin-hash.py` |
+| `ADMIN_PASSWORD`      | كلمة مرور نصية (بديل أبسط)             | تُستخدم إن لم تُضبط البصمة. تبقى على الخادم فقط |
+| `ADMIN_KEY`           | مفتاح سري طويل وعشوائي                 | يُستخدم في رابط الموافقة (تفتحه أنت فقط) |
+| `TOKEN_SECRET`        | مفتاح سري آخر (يمكن تركه ليأخذ قيمة ADMIN_KEY) | توقيع روابط التنزيل (HMAC) |
+| `SITE_URL`            | `https://<your-site>.pages.dev`        | يُستخدم في رابط الموافقة داخل الإشعار |
+| `TOKEN_TTL_HOURS`     | `48` (اختياري)                          | صلاحية رابط التنزيل بالساعات |
+
+> **لوحة التحكم `/admin`** محمية بكلمة المرور أعلاه. الجلسة تُخزَّن في KV (`sess:<id>`، صلاحية 12 ساعة) وتُحمَل في كوكي `cv_admin` (HttpOnly, SameSite=Strict). الطلبات الحسّاسة محمية أيضاً بفحص الأصل (CSRF) وحدّ لمحاولات الدخول.
+>
+> لإنشاء بصمة كلمة المرور:
+> ```bash
+> python3 tools/admin/make-admin-hash.py
+> # أدخل كلمة المرور → يطبع: pbkdf2$...$...$...
+> ```
+> انسخ الناتج إلى `ADMIN_PASSWORD_HASH` في Cloudflare.
 
 **اختياري — لإرسال إشعار بالبريد عند وصول طلب جديد:**
 
@@ -88,8 +99,14 @@ npx wrangler kv key put --remote --namespace-id <ID> pdf:en \
    - **Build output directory:** `public`
 3. بعد أول نشر، تأكد من ربط `CV_KV` (الخطوة 2).
 
-`tools/build-site.py` يجمّع `public/` من: `index.html`, `assets/`, `functions/`,
-`robots.txt`, `sitemap.xml`, `404.html`, `.nojekyll`.
+`tools/build-site.py` يجمّع `public/` من: `index.html`, `home.html`, `admin.html`,
+`assets/`, `robots.txt`, `sitemap.xml`, `404.html`, `.nojekyll`, `_redirects`.
+
+إعادة التوجيه (`_redirects`) تعطي مسارات ثابتة: `/home` → `home.html` و `/admin` → `admin.html`.
+مجلد `functions/` يبقى في جذر المستودع (لا يُنسخ إلى `public/`) — Cloudflare Pages يقرؤه مباشرة.
+
+**المحتوى الحيّ:** لوحة التحكم تكتب المحتوى في KV تحت المفتاح `content`، والصور تحت `img:<hash>`.
+الصفحة الرئيسية `/home` تقرأ `/api/content`؛ وإن لم يوجد محتوى محفوظ بعد، تستخدم `assets/js/data.js` المرفق.
 
 ---
 

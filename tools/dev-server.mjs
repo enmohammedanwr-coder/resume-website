@@ -33,13 +33,19 @@ const store = new Map();
 if (fs.existsSync(KV_FILE)) {
   try {
     for (const [k, v] of Object.entries(JSON.parse(fs.readFileSync(KV_FILE, 'utf8')))) {
-      store.set(k, { kind: 'text', value: v });
+      if (v && typeof v === 'object' && v.b64) {
+        store.set(k, { kind: 'bytes', value: new Uint8Array(Buffer.from(v.b64, 'base64')) });
+      } else {
+        store.set(k, { kind: 'text', value: v });
+      }
     }
   } catch { /* ignore corrupt file */ }
 }
 function persistKV() {
   const out = {};
-  for (const [k, v] of store) if (v.kind === 'text') out[k] = v.value;
+  for (const [k, v] of store) {
+    out[k] = v.kind === 'text' ? v.value : { b64: Buffer.from(v.value).toString('base64') };
+  }
   fs.writeFileSync(KV_FILE, JSON.stringify(out, null, 2));
 }
 const KV = {
@@ -54,11 +60,28 @@ const KV = {
     return entry.kind === 'text' ? entry.value : null;
   },
   async put(key, value, opts) {
-    if (typeof value === 'string') store.set(key, { kind: 'text', value });
+    const meta = (opts && opts.metadata) || null;
+    if (typeof value === 'string') store.set(key, { kind: 'text', value, meta });
     else if (value instanceof ArrayBuffer || ArrayBuffer.isView(value)) {
-      store.set(key, { kind: 'bytes', value: value instanceof ArrayBuffer ? new Uint8Array(value) : value });
+      store.set(key, { kind: 'bytes', value: value instanceof ArrayBuffer ? new Uint8Array(value) : value, meta });
     }
     persistKV();
+  },
+  async delete(key) { store.delete(key); persistKV(); },
+  async list(opts = {}) {
+    const prefix = opts.prefix || '';
+    const keys = [...store.keys()].filter((k) => k.startsWith(prefix)).sort();
+    return { keys: keys.map((name) => ({ name })), list_complete: true, cursor: null };
+  },
+  async getWithMetadata(key, opts) {
+    const entry = store.get(key);
+    if (!entry) return { value: null, metadata: null };
+    if (opts && opts.type === 'arrayBuffer') {
+      if (entry.kind !== 'bytes') return { value: null, metadata: entry.meta || null };
+      const ab = entry.value.buffer.slice(entry.value.byteOffset, entry.value.byteOffset + entry.value.byteLength);
+      return { value: ab, metadata: entry.meta || null };
+    }
+    return { value: entry.kind === 'text' ? entry.value : null, metadata: entry.meta || null };
   },
 };
 
@@ -71,6 +94,8 @@ for (const [key, file] of [['pdf:ar', 'Mohammed-Anwar-CV.pdf'], ['pdf:en', 'Moha
 const env = {
   CV_KV: KV,
   ADMIN_KEY: process.env.ADMIN_KEY || 'dev-admin-key',
+  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || 'dev-admin-password',
+  ADMIN_PASSWORD_HASH: process.env.ADMIN_PASSWORD_HASH || '',
   TOKEN_SECRET: process.env.TOKEN_SECRET || 'dev-token-secret',
   TOKEN_TTL_HOURS: '48',
   SITE_URL: `http://localhost:${PORT}`,
@@ -98,17 +123,38 @@ function selectHandler(mod, method) {
   return named || mod.onRequest || null;
 }
 
+// Resolve an /api/<path> to a function file. Supports Cloudflare catch-all
+// routes such as functions/api/img/[[path]].js (matched as `params.path`).
+function resolveRoute(rel) {
+  const direct = path.join(FUNC_DIR, rel + '.js');
+  if (fs.existsSync(direct)) return { rel: rel + '.js', params: {} };
+
+  const segs = rel.split('/').filter(Boolean);
+  for (let i = segs.length - 1; i >= 0; i--) {
+    const prefix = segs.slice(0, i);
+    const rest = segs.slice(i);
+    const cand = path.join(FUNC_DIR, ...prefix, '[[path]].js');
+    if (fs.existsSync(cand)) {
+      return { rel: [...prefix, '[[path]].js'].join('/'), params: { path: rest.join('/') } };
+    }
+  }
+  return null;
+}
+
 async function serveApi(request) {
   const url = new URL(request.url);
-  const rel = url.pathname.replace(/^\/api\/?/, '').replace(/\/$/, '') + '.js';
-  const mod = await loadFunction(rel);
+  const rel = url.pathname.replace(/^\/api\/?/, '').replace(/\/$/, '');
+  const route = resolveRoute(rel);
+  if (!route) return new Response('Not found', { status: 404 });
+
+  const mod = await loadFunction(route.rel);
   if (!mod) return new Response('Not found', { status: 404 });
 
   const handler = selectHandler(mod, request.method);
   if (!handler) return new Response('Method not allowed', { status: 405 });
 
   const mwMod = await loadFunction('_middleware.js');
-  const ctx = { request, env, params: {}, data: {} };
+  const ctx = { request, env, params: route.params, data: {} };
   const run = () => handler(ctx);
   if (mwMod && mwMod.onRequest) {
     ctx.next = run;
@@ -117,11 +163,24 @@ async function serveApi(request) {
   return run();
 }
 
+// Mirrors _redirects: pretty URL -> real file, served with a 200 (rewrite).
+const REWRITES = new Map([
+  ['/home', '/home.html'],
+  ['/admin', '/admin.html'],
+]);
+
 function serveStatic(request) {
   const url = new URL(request.url);
   let rel = decodeURIComponent(url.pathname);
+  if (REWRITES.has(rel)) rel = REWRITES.get(rel);
   if (rel === '/' || rel.endsWith('/')) rel += 'index.html';
   const file = path.join(PUBLIC_DIR, rel);
+  if (rel.startsWith('/assets/cv/')) {
+    const nf = path.join(PUBLIC_DIR, '404.html');
+    return new Response(fs.existsSync(nf) ? fs.readFileSync(nf) : 'Not found', {
+      status: 404, headers: { 'content-type': MIME['.html'], 'cache-control': 'no-store' },
+    });
+  }
   if (!file.startsWith(PUBLIC_DIR) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
     const notFound = path.join(PUBLIC_DIR, '404.html');
     if (fs.existsSync(notFound)) {

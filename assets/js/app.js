@@ -452,9 +452,36 @@ function initParticles() {
   });
 }
 
+/* ---------- Live content (edited from the dashboard, stored in KV) ----------
+   The bundled data.js is the fallback so the site never breaks if KV has no
+   content yet or the API is unavailable. */
+async function loadLiveContent() {
+  try {
+    const res = await fetch('/api/content', { cache: 'no-store' });
+    if (!res.ok) return null;
+    const j = await res.json();
+    if (j && j.ok && j.content && j.content.ar && j.content.en) return j.content;
+  } catch (e) { /* offline / not configured → fallback */ }
+  return null;
+}
+
+function mergeContent(bundled, live) {
+  // Start from the bundled defaults, overlay the live content so any new field
+  // added to the code is still present even if the stored content predates it.
+  const out = JSON.parse(JSON.stringify(bundled));
+  Object.keys(live).forEach((k) => {
+    if (k === 'ar' || k === 'en') {
+      out[k] = Object.assign({}, out[k], live[k]);
+    } else {
+      out[k] = live[k];
+    }
+  });
+  return out;
+}
+
 /* ---------- Init ---------- */
-function init() {
-  // Draft preview: admin panel opens index.html?preview=1 to show unsaved edits
+async function init() {
+  // Draft preview: admin panel opens the site with ?preview=1 to show unsaved edits
   const isPreview = new URLSearchParams(location.search).has('preview');
   let data = window.SITE_DATA;
   if (isPreview) {
@@ -463,6 +490,9 @@ function init() {
       if (draft) data = draft;
     } catch (e) { /* keep original */ }
     showPreviewBanner();
+  } else {
+    const live = await loadLiveContent();
+    if (live) data = mergeContent(window.SITE_DATA, live);
   }
   state.data = data;
   applyTheme();

@@ -11,6 +11,9 @@ const ICON_OPTIONS = ['web','code','android','database','building','analysis','d
 const LS_DRAFT = 'siteDraft';
 const LS_GH = 'ghPublish';
 
+/* Server API (Cloudflare Pages Functions). Empty = same origin. */
+const API = '';
+
 /* ---------- State ---------- */
 const state = {
   lang: 'ar',
@@ -294,7 +297,9 @@ const PANELS = [
         { key: 'icon', label: 'الأيقونة', type: 'icon' }
       ] }) },
   { id: 'nav', icon: '🧭', title: 'القائمة والتذييل', render: panelNav },
-  { id: 'contact', icon: '📞', title: 'التواصل', render: panelContact }
+  { id: 'contact', icon: '📞', title: 'التواصل', render: panelContact },
+  { id: 'requests', icon: '📥', title: 'طلبات السيرة', render: panelRequests },
+  { id: 'cvfile', icon: '📄', title: 'ملف السيرة', render: panelCvFile }
 ];
 
 /* ---------- Render ---------- */
@@ -307,6 +312,8 @@ function renderPanel() {
   const p = PANELS.find(x => x.id === state.active) || PANELS[0];
   $('#main').innerHTML = p.render();
   bindItemToggles();
+  if (p.id === 'requests') loadRequests(currentReqFilter);
+  if (p.id === 'cvfile') loadCvStatus();
 }
 function render() { renderSideNav(); renderPanel(); }
 
@@ -585,11 +592,12 @@ async function publish() {
     const b64 = b64EncodeUtf8(dataJs);
 
     log('• جلب ملفات الموقع الحالية...');
-    const files = ['index.html', 'admin.html', 'assets/css/style.css', 'assets/css/admin.css',
-      'assets/js/app.js', 'assets/js/admin.js', 'README.md', 'robots.txt', 'sitemap.xml',
-      '404.html', '.nojekyll',
-      'assets/img/profile.jpg', 'assets/img/project-airport.jpg', 'assets/img/project-traffic.jpg',
-      'assets/img/project-guardian.jpg', 'assets/img/project-training.jpg'];
+    const files = ['index.html', 'home.html', 'admin.html',
+      'assets/css/style.css', 'assets/css/admin.css', 'assets/css/landing.css',
+      'assets/js/app.js', 'assets/js/admin.js', 'assets/js/data.js',
+      'assets/js/landing.js', 'assets/js/grades.js', 'assets/js/grades-ui.js',
+      'assets/js/cv-request.js', 'README.md', 'robots.txt', 'sitemap.xml',
+      '404.html', '.nojekyll', '_redirects'];
 
     const msg = `Update site content via admin panel — ${new Date().toISOString().slice(0, 16).replace('T', ' ')}`;
 
@@ -629,17 +637,227 @@ async function publish() {
 /* ---------- Preview ---------- */
 function openPreview() {
   localStorage.setItem(LS_DRAFT, JSON.stringify(state.draft));
-  window.open('index.html?preview=1', '_blank');
+  window.open('home.html?preview=1', '_blank');
 }
 
-/* ---------- Apply edits (make visible on the site, before publishing) ---------- */
-// Save the draft and open the site with ?preview=1 so the user can verify the
-// changes on the real homepage. Nothing is uploaded to GitHub until they press
-// "نشر" (publish).
-function applyChanges() {
-  saveDraft();
-  window.open('index.html?preview=1', '_blank');
-  toast('تم تطبيق التعديلات — راجعها في الرئيسية ثم اضغط «نشر»', 'ok');
+/* ---------- Panel: CV requests ---------- */
+const REQ_STATUS = {
+  pending:  { label: 'قيد الانتظار', cls: 'st-pending' },
+  approved: { label: 'مقبول',       cls: 'st-approved' },
+  rejected: { label: 'مرفوض',       cls: 'st-rejected' }
+};
+function reqRow(r) {
+  const st = REQ_STATUS[r.status] || { label: r.status, cls: '' };
+  const when = r.createdAt ? new Date(r.createdAt).toLocaleString('ar') : '';
+  const actions = r.status === 'pending'
+    ? `<button class="btn btn--apply btn--xs" data-req-approve="${esc(r.id)}">قبول وإرسال الرابط</button>
+       <button class="btn btn--danger btn--xs" data-req-reject="${esc(r.id)}">رفض</button>`
+    : '';
+  return `<div class="req">
+    <div class="req__top">
+      <strong>${esc(r.name || '—')}</strong>
+      <span class="badge ${st.cls}">${st.label}</span>
+    </div>
+    <div class="req__meta">${esc(r.email || '')} · ${esc(when)}</div>
+    ${r.reason ? `<div class="req__reason">${esc(r.reason)}</div>` : ''}
+    <div class="req__actions">${actions}</div>
+  </div>`;
+}
+function panelRequests() {
+  return `<div class="panel">
+    <div class="panel__head">
+      <div><h2>طلبات تنزيل السيرة</h2><p class="muted">اقبل الطلب ليُرسل لصاحبه رابط تنزيل مؤقت عبر البريد.</p></div>
+      <div class="req-filters">
+        <button class="btn btn--ghost btn--xs" data-req-filter="pending">قيد الانتظار</button>
+        <button class="btn btn--ghost btn--xs" data-req-filter="all">الكل</button>
+      </div>
+    </div>
+    <div id="reqList" class="req-list"><div class="empty">جارٍ التحميل…</div></div>
+  </div>`;
+}
+
+/* ---------- Panel: CV file upload ---------- */
+function panelCvFile() {
+  return `<div class="panel">
+    <div class="panel__head"><div><h2>ملف السيرة الذاتية (PDF)</h2>
+      <p class="muted">يُخزَّن الملف بشكل خاص ولا يُنشر كرابط مباشر. لا يمكن تنزيله إلا عبر موافقتك.</p></div></div>
+    <div class="grid-2">
+      <div class="cvbox" data-cv="ar">
+        <h3 class="h3">النسخة العربية</h3>
+        <p class="cvbox__status" id="cvStatusAr">…</p>
+        <label class="btn btn--ghost btn--sm">⬆ رفع ملف PDF
+          <input type="file" accept="application/pdf,.pdf" data-cv-file="ar" hidden></label>
+      </div>
+      <div class="cvbox" data-cv="en">
+        <h3 class="h3">النسخة الإنجليزية</h3>
+        <p class="cvbox__status" id="cvStatusEn">…</p>
+        <label class="btn btn--ghost btn--sm">⬆ رفع ملف PDF
+          <input type="file" accept="application/pdf,.pdf" data-cv-file="en" hidden></label>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- Server API ---------- */
+async function apiFetch(path, opts = {}) {
+  const res = await fetch(API + path, {
+    credentials: 'same-origin',
+    headers: opts.body && !(opts.body instanceof FormData)
+      ? { 'content-type': 'application/json' } : {},
+    ...opts
+  });
+  let data = null;
+  try { data = await res.json(); } catch (e) { /* non-JSON */ }
+  return { res, data };
+}
+
+async function checkSession() {
+  try {
+    const { data } = await apiFetch('/api/admin/session');
+    return Boolean(data && data.ok);
+  } catch (e) { return false; }
+}
+
+async function doLogin(password) {
+  const { res, data } = await apiFetch('/api/admin/login', {
+    method: 'POST', body: JSON.stringify({ password })
+  });
+  if (res.ok && data && data.ok) return { ok: true };
+  const err = data && data.error;
+  const msg = err === 'too_many_attempts' ? 'محاولات كثيرة. حاول لاحقاً.'
+    : err === 'admin_not_configured' ? 'لم تُضبط كلمة مرور المدير على الخادم بعد.'
+    : 'كلمة المرور غير صحيحة.';
+  return { ok: false, message: msg };
+}
+
+async function doLogout() {
+  try { await apiFetch('/api/admin/logout', { method: 'POST' }); } catch (e) { /* ignore */ }
+  location.reload();
+}
+
+// Collect every uploaded image (dataURL) from the draft and send it with the
+// content so the server can host it and return /api/img/<hash> URLs.
+function collectImages(data) {
+  const images = [];
+  const walk = (o) => {
+    if (Array.isArray(o)) { o.forEach(walk); return; }
+    if (o && typeof o === 'object') { Object.values(o).forEach(walk); return; }
+    if (typeof o === 'string' && o.startsWith('data:image')) images.push({ dataUrl: o });
+  };
+  walk(data);
+  return images;
+}
+
+async function saveContentToServer() {
+  const btn = $('#saveSiteBtn');
+  const orig = btn.textContent; btn.disabled = true; btn.textContent = '… جارٍ الحفظ';
+  try {
+    const content = clone(state.draft);
+    const images = collectImages(content);
+    const { res, data } = await apiFetch('/api/admin/content', {
+      method: 'POST', body: JSON.stringify({ content, images })
+    });
+    if (res.status === 401) { toast('انتهت الجلسة — أعد الدخول', 'err'); return showLogin(); }
+    if (!res.ok || !data || !data.ok) throw new Error((data && data.error) || 'save_failed');
+    // Reflect hosted image URLs back into the local draft so previews stay valid.
+    saveDraft();
+    toast('تم الحفظ على الموقع ✅', 'ok');
+  } catch (e) {
+    toast('تعذّر الحفظ: ' + e.message, 'err');
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
+  }
+}
+
+/* ---------- Requests loading + actions ---------- */
+async function loadRequests(status = 'pending') {
+  const box = $('#reqList');
+  if (!box) return;
+  box.innerHTML = '<div class="empty">جارٍ التحميل…</div>';
+  const { res, data } = await apiFetch(`/api/admin/requests?status=${encodeURIComponent(status)}`);
+  if (res.status === 401) return showLogin();
+  const list = (data && data.requests) || [];
+  box.innerHTML = list.length
+    ? list.map(reqRow).join('')
+    : '<div class="empty">لا توجد طلبات.</div>';
+}
+async function decideRequest(id, action) {
+  const { res, data } = await apiFetch('/api/admin/requests', {
+    method: 'POST', body: JSON.stringify({ id, action })
+  });
+  if (res.status === 401) return showLogin();
+  if (!res.ok || !data || !data.ok) { toast('تعذّر تنفيذ العملية', 'err'); return; }
+  toast(action === 'approve' ? 'تم القبول وإرسال الرابط ✅' : 'تم الرفض', 'ok');
+  loadRequests(currentReqFilter);
+}
+let currentReqFilter = 'pending';
+
+/* ---------- CV upload ---------- */
+async function loadCvStatus() {
+  const { data } = await apiFetch('/api/admin/cv');
+  if (!data || !data.ok) return;
+  const fmt = (x) => x.present ? `موجود (${Math.round(x.size / 1024)} كيلوبايت)` : 'غير موجود';
+  const ar = $('#cvStatusAr'), en = $('#cvStatusEn');
+  if (ar) ar.textContent = fmt(data.ar);
+  if (en) en.textContent = fmt(data.en);
+}
+async function uploadCv(lang, file) {
+  if (!file) return;
+  if (file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)) {
+    toast('الملف يجب أن يكون PDF', 'err'); return;
+  }
+  const fd = new FormData();
+  fd.append('lang', lang);
+  fd.append('file', file);
+  toast('جارٍ الرفع…');
+  const { res, data } = await apiFetch('/api/admin/cv', { method: 'POST', body: fd });
+  if (res.status === 401) return showLogin();
+  if (!res.ok || !data || !data.ok) { toast('تعذّر الرفع: ' + ((data && data.error) || ''), 'err'); return; }
+  toast('تم رفع الملف ✅', 'ok');
+  loadCvStatus();
+}
+
+/* ---------- Requests / CV delegated events ---------- */
+function bindPanelActions() {
+  const main = $('#main');
+  main.addEventListener('click', (e) => {
+    const f = e.target.closest('[data-req-filter]');
+    if (f) { currentReqFilter = f.dataset.reqFilter; loadRequests(currentReqFilter); return; }
+    const ap = e.target.closest('[data-req-approve]');
+    if (ap) { decideRequest(ap.dataset.reqApprove, 'approve'); return; }
+    const rj = e.target.closest('[data-req-reject]');
+    if (rj) { decideRequest(rj.dataset.reqReject, 'reject'); return; }
+  });
+  main.addEventListener('change', (e) => {
+    const inp = e.target.closest('[data-cv-file]');
+    if (inp && inp.files && inp.files[0]) uploadCv(inp.dataset.cvFile, inp.files[0]);
+  });
+}
+
+/* ---------- Login / logout ---------- */
+function showLogin() {
+  $('#app').hidden = true;
+  $('#login').hidden = false;
+  const pw = $('#pw'); if (pw) { pw.value = ''; pw.focus(); }
+}
+function showApp() {
+  $('#login').hidden = true;
+  $('#app').hidden = false;
+  initEditor();
+}
+async function boot() {
+  const ok = await checkSession();
+  if (ok) { showApp(); return; }
+  // Show login even if the API is unreachable (e.g. GitHub Pages preview).
+  showLogin();
+  $('#loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = $('#loginMsg'); msg.textContent = '';
+    const btn = $('#loginBtn'); btn.disabled = true; btn.textContent = '…';
+    const r = await doLogin($('#pw').value);
+    btn.disabled = false; btn.textContent = 'دخول';
+    if (r.ok) { showApp(); } else { msg.textContent = r.message; }
+  });
 }
 
 /* ---------- Init ---------- */
@@ -649,6 +867,7 @@ function initEditor() {
   initModals();
   bindEditing();
   bindSettings();
+  bindPanelActions();
   render();
 
   $('#sideNav').addEventListener('click', (e) => {
@@ -659,8 +878,8 @@ function initEditor() {
   });
 
   $('#previewBtn').addEventListener('click', openPreview);
-  $('#applyBtn').addEventListener('click', () => openModal('#applyModal'));
-  $('#confirmApply').addEventListener('click', () => { closeModal('#applyModal'); applyChanges(); });
+  $('#saveSiteBtn').addEventListener('click', saveContentToServer);
+  $('#logoutBtn').addEventListener('click', doLogout);
   $('#resetBtn').addEventListener('click', () => {
     if (!confirm('سيتم استرجاع المحتوى الأصلي وإلغاء كل التعديلات. متابعة؟')) return;
     localStorage.removeItem(LS_DRAFT);
@@ -691,4 +910,4 @@ function initEditor() {
 }
 
 /* ---------- Boot ---------- */
-initEditor();
+boot();

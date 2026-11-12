@@ -1,16 +1,11 @@
 /* ==========================================================================
    GET /api/cv-approve?req=<id>&k=<ADMIN_KEY>[&action=reject]
-   The owner clicks this from the notification email. On approval we mint a
-   short-lived signed token and email it to the requester.
+   The owner clicks this from the notification email. On approval a
+   short-lived signed token is minted and emailed to the requester.
+   (The dashboard uses the same logic via /api/admin/requests.)
    ========================================================================== */
-import {
-  json, badRequest, kv, kvGetJson, kvPutJson, signToken, sendMail,
-} from './_lib.js';
-
-function siteUrl(env, request) {
-  if (env.SITE_URL) return env.SITE_URL.replace(/\/$/, '');
-  return new URL(request.url).origin;
-}
+import { json, badRequest } from './_lib.js';
+import { approveRequest, rejectRequest } from './_cv.js';
 
 function htmlPage(title, message) {
   return new Response(
@@ -42,51 +37,16 @@ export async function onRequestGet(context) {
   }
   if (!id) return badRequest('missing_request_id');
 
-  const store = kv(env);
-  const record = await kvGetJson(store, `req:${id}`);
-  if (!record) return json({ ok: false, error: 'request_not_found' }, 404);
-
   if (action === 'reject') {
-    record.status = 'rejected';
-    record.decidedAt = new Date().toISOString();
-    await kvPutJson(store, `req:${id}`, record);
-    await kvPutJson(store, `email:${record.emailHash}`, {
-      id, email: record.email, name: record.name, status: 'rejected',
-    });
+    const res = await rejectRequest(env, id);
+    if (!res.ok) return json({ ok: false, error: res.error }, 404);
     return htmlPage('تم رفض الطلب', 'تم رفض طلب تنزيل السيرة الذاتية.');
   }
 
-  // Approve: mint a signed, expiring token.
-  const ttlHours = parseInt(env.TOKEN_TTL_HOURS || '48', 10);
-  const exp = Date.now() + ttlHours * 60 * 60 * 1000;
-  const secret = env.TOKEN_SECRET || env.ADMIN_KEY;
-  const token = await signToken({ e: record.emailHash, r: id, exp }, secret);
-
-  record.status = 'approved';
-  record.decidedAt = new Date().toISOString();
-  record.tokenExp = exp;
-  await kvPutJson(store, `req:${id}`, record);
-  await kvPutJson(store, `approved:${record.emailHash}`, { token, exp, email: record.email });
-  await kvPutJson(store, `token:${token}`, { email: record.email, exp, id });
-
-  const base = siteUrl(env, request);
-  const link = `${base}/?cv=${encodeURIComponent(token)}`;
-
-  await sendMail(env, {
-    to: record.email,
-    subject: record.lang === 'en'
-      ? 'Your CV download link is approved'
-      : 'تمت الموافقة على رابط تنزيل السيرة الذاتية',
-    html: `<p>${record.lang === 'en' ? 'Hello' : 'مرحباً'} ${record.name},</p>
-      <p>${record.lang === 'en'
-        ? 'Your request was approved. Use the link below to download the CV (valid for a limited time):'
-        : 'تمت الموافقة على طلبك. استخدم الرابط التالي لتنزيل السيرة الذاتية (صالح لمدة محدودة):'}</p>
-      <p><a href="${link}">${link}</a></p>
-      <p>${record.lang === 'en' ? 'Valid for' : 'صالح لمدة'} ${ttlHours} ${record.lang === 'en' ? 'hours' : 'ساعة'}.</p>`,
-  });
-
+  const res = await approveRequest(env, request, id);
+  if (!res.ok) return json({ ok: false, error: res.error }, 404);
   return htmlPage('تمت الموافقة ✅',
-    `تمت الموافقة وإرسال رابط التنزيل إلى: <b>${record.email}</b>`);
+    `تمت الموافقة وإرسال رابط التنزيل إلى: <b>${res.record.email}</b>`);
 }
 
 export async function onRequest(context) {

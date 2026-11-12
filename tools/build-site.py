@@ -21,18 +21,21 @@ OUT = os.path.join(BASE, "public")
 
 # Files / folders copied verbatim into the output directory.
 INCLUDE = [
-    "index.html",
+    "index.html",     # landing page  →  /
+    "home.html",      # CV site       →  /home
+    "admin.html",     # dashboard     →  /admin  (login-gated)
     "404.html",
     "robots.txt",
     "sitemap.xml",
+    "_redirects",
     ".nojekyll",
     "assets/css",
     "assets/js",
     "assets/img",
 ]
 
-# Never publish these (kept out of the output even if listed above).
-EXCLUDE_NAMES = {"admin.html", "admin.css", "admin.js"}
+# Never publish the CV PDFs (they live only in KV, served via /api/cv-download).
+EXCLUDE_NAMES = set()
 
 ROUTES_JSON = """{
   "version": 1,
@@ -52,6 +55,10 @@ HEADERS = """# Security headers for the static site
 # Long-cache immutable assets
 /assets/*
   Cache-Control: public, max-age=604800
+
+# Never let a stray CV PDF be cached/served
+/assets/cv/*
+  Cache-Control: no-store
 """
 
 

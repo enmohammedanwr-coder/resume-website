@@ -8,3 +8,6 @@ public/
 
 # Private CV PDFs — uploaded to Cloudflare KV, never published/committed
 tools/cv/dist/
+
+# Local dev KV (mock Cloudflare KV used by tools/dev-server.mjs)
+tools/cv/.dev-kv.json
