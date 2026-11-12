@@ -17,6 +17,353 @@ const SITE_DATA = {
       "linkedin": "",
       "github": "https://github.com/enmohammedanwr-coder",
       "twitter": ""
+    },
+    "grades": {
+      "settings": {
+        "passMark": 50,
+        "maxMark": 100,
+        "showSemesterAverage": true
+      },
+      "labels": {
+        "button": {
+          "ar": "درجاتي",
+          "en": "My Grades"
+        },
+        "title": {
+          "ar": "درجاتي الأكاديمية",
+          "en": "My Academic Grades"
+        },
+        "subtitle": {
+          "ar": "الدرجات موزّعة على المستويات والفصول الدراسية.",
+          "en": "Grades grouped by level and semester."
+        },
+        "close": {
+          "ar": "إغلاق",
+          "en": "Close"
+        },
+        "subject": {
+          "ar": "المادة",
+          "en": "Subject"
+        },
+        "grade": {
+          "ar": "الدرجة",
+          "en": "Grade"
+        },
+        "status": {
+          "ar": "الحالة",
+          "en": "Status"
+        },
+        "pass": {
+          "ar": "ناجح",
+          "en": "Pass"
+        },
+        "fail": {
+          "ar": "راسب",
+          "en": "Fail"
+        },
+        "pending": {
+          "ar": "لم تُرصد الدرجات بعد",
+          "en": "Grades not recorded yet"
+        },
+        "academicYear": {
+          "ar": "العام الجامعي",
+          "en": "Academic Year"
+        },
+        "semesterAvg": {
+          "ar": "معدل الفصل",
+          "en": "Semester average"
+        },
+        "subjectsCount": {
+          "ar": "عدد المواد",
+          "en": "Subjects"
+        }
+      },
+      "levels": [
+        {
+          "id": "level-1",
+          "name": {
+            "ar": "المستوى الأول",
+            "en": "Level 1"
+          },
+          "year": "2022/2023",
+          "semesters": [
+            {
+              "id": "s1",
+              "name": {
+                "ar": "الفصل الدراسي الأول",
+                "en": "First Semester"
+              },
+              "recorded": true,
+              "subjects": [
+                {
+                  "name": {
+                    "ar": "الثقافة الإسلامية",
+                    "en": "Islamic Culture"
+                  },
+                  "grade": 86
+                },
+                {
+                  "name": {
+                    "ar": "لغة إنجليزية (101)",
+                    "en": "English Language (101)"
+                  },
+                  "grade": 89
+                },
+                {
+                  "name": {
+                    "ar": "لغة عربية (101)",
+                    "en": "Arabic Language (101)"
+                  },
+                  "grade": 90
+                },
+                {
+                  "name": {
+                    "ar": "تفاضل وتكامل (1)",
+                    "en": "Calculus (1)"
+                  },
+                  "grade": 80
+                },
+                {
+                  "name": {
+                    "ar": "مهارات الحاسوب",
+                    "en": "Computer Skills"
+                  },
+                  "grade": 94
+                },
+                {
+                  "name": {
+                    "ar": "الثقافة الوطنية",
+                    "en": "National Culture"
+                  },
+                  "grade": 85
+                },
+                {
+                  "name": {
+                    "ar": "برمجة حاسوب (1)",
+                    "en": "Computer Programming (1)"
+                  },
+                  "grade": 92
+                }
+              ]
+            },
+            {
+              "id": "s2",
+              "name": {
+                "ar": "الفصل الدراسي الثاني",
+                "en": "Second Semester"
+              },
+              "recorded": false,
+              "subjects": []
+            }
+          ]
+        },
+        {
+          "id": "level-2",
+          "name": {
+            "ar": "المستوى الثاني",
+            "en": "Level 2"
+          },
+          "year": "2023/2024",
+          "semesters": [
+            {
+              "id": "s1",
+              "name": {
+                "ar": "الفصل الدراسي الأول",
+                "en": "First Semester"
+              },
+              "recorded": true,
+              "subjects": [
+                {
+                  "name": {
+                    "ar": "أساسيات قواعد البيانات",
+                    "en": "Fundamentals of Databases"
+                  },
+                  "grade": 94
+                },
+                {
+                  "name": {
+                    "ar": "مبادئ شبكات الحاسوب",
+                    "en": "Principles of Computer Networks"
+                  },
+                  "grade": 83
+                },
+                {
+                  "name": {
+                    "ar": "أساسيات تكنولوجيا الويب",
+                    "en": "Fundamentals of Web Technology"
+                  },
+                  "grade": 90
+                },
+                {
+                  "name": {
+                    "ar": "مقدمة في نظم المعلومات",
+                    "en": "Introduction to Information Systems"
+                  },
+                  "grade": 92
+                },
+                {
+                  "name": {
+                    "ar": "رياضيات متقطعة",
+                    "en": "Discrete Mathematics"
+                  },
+                  "grade": 93
+                },
+                {
+                  "name": {
+                    "ar": "البرمجة الكائنية",
+                    "en": "Object-Oriented Programming"
+                  },
+                  "grade": 91
+                }
+              ]
+            },
+            {
+              "id": "s2",
+              "name": {
+                "ar": "الفصل الدراسي الثاني",
+                "en": "Second Semester"
+              },
+              "recorded": false,
+              "subjects": []
+            }
+          ]
+        },
+        {
+          "id": "level-3",
+          "name": {
+            "ar": "المستوى الثالث",
+            "en": "Level 3"
+          },
+          "year": "2024/2025",
+          "semesters": [
+            {
+              "id": "s1",
+              "name": {
+                "ar": "الفصل الدراسي الأول",
+                "en": "First Semester"
+              },
+              "recorded": true,
+              "subjects": [
+                {
+                  "name": {
+                    "ar": "تحليل وتصميم النظم",
+                    "en": "Systems Analysis and Design"
+                  },
+                  "grade": 87
+                },
+                {
+                  "name": {
+                    "ar": "أمنية المعلومات",
+                    "en": "Information Security"
+                  },
+                  "grade": 98
+                },
+                {
+                  "name": {
+                    "ar": "تطوير التطبيقات",
+                    "en": "Application Development"
+                  },
+                  "grade": 90
+                },
+                {
+                  "name": {
+                    "ar": "نظم دعم القرار",
+                    "en": "Decision Support Systems"
+                  },
+                  "grade": 85
+                },
+                {
+                  "name": {
+                    "ar": "مقدمة إلى الذكاء الإصطناعي",
+                    "en": "Introduction to Artificial Intelligence"
+                  },
+                  "grade": 83
+                },
+                {
+                  "name": {
+                    "ar": "أساسيات نظم التشغيل",
+                    "en": "Fundamentals of Operating Systems"
+                  },
+                  "grade": 86
+                }
+              ]
+            },
+            {
+              "id": "s2",
+              "name": {
+                "ar": "الفصل الدراسي الثاني",
+                "en": "Second Semester"
+              },
+              "recorded": false,
+              "subjects": []
+            }
+          ]
+        },
+        {
+          "id": "level-4",
+          "name": {
+            "ar": "المستوى الرابع",
+            "en": "Level 4"
+          },
+          "year": "2025/2026",
+          "semesters": [
+            {
+              "id": "s1",
+              "name": {
+                "ar": "الفصل الدراسي الأول",
+                "en": "First Semester"
+              },
+              "recorded": true,
+              "subjects": [
+                {
+                  "name": {
+                    "ar": "نظم المعلومات الجغرافية",
+                    "en": "Geographic Information Systems"
+                  },
+                  "grade": 83
+                },
+                {
+                  "name": {
+                    "ar": "أخلاقيات الحاسوب",
+                    "en": "Computer Ethics"
+                  },
+                  "grade": 97
+                },
+                {
+                  "name": {
+                    "ar": "مشروع تخرج (1)",
+                    "en": "Graduation Project (1)"
+                  },
+                  "grade": 97
+                },
+                {
+                  "name": {
+                    "ar": "نظم تخطيط موارد المشاريع",
+                    "en": "Enterprise Resource Planning Systems"
+                  },
+                  "grade": 87
+                },
+                {
+                  "name": {
+                    "ar": "البرمجة المتقدمة (اختياري 2)",
+                    "en": "Advanced Programming (Elective 2)"
+                  },
+                  "grade": 83
+                }
+              ]
+            },
+            {
+              "id": "s2",
+              "name": {
+                "ar": "الفصل الدراسي الثاني",
+                "en": "Second Semester"
+              },
+              "recorded": false,
+              "subjects": []
+            }
+          ]
+        }
+      ]
     }
   },
   "ar": {
