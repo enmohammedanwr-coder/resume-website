@@ -45,12 +45,25 @@ function setField(path, value) { setPath(rootFor(path), path, value); }
 function getField(path) { return getPath(rootFor(path), path); }
 
 /* ---------- Draft load / save ---------- */
+// A pristine draft = bundled content + the grades data (grades live in their
+// own file so the site can also run without them).
+function freshDraft() {
+  const d = clone(window.SITE_DATA);
+  if (!d.meta) d.meta = {};
+  d.meta.grades = clone(window.GRADES_DATA || { settings: {}, labels: {}, levels: [] });
+  return d;
+}
 function loadDraft() {
   const saved = localStorage.getItem(LS_DRAFT);
   if (saved) {
-    try { return JSON.parse(saved); } catch (e) { /* fall through */ }
+    try {
+      const d = JSON.parse(saved);
+      if (!d.meta) d.meta = {};
+      if (!d.meta.grades) d.meta.grades = clone(window.GRADES_DATA || { settings: {}, labels: {}, levels: [] });
+      return d;
+    } catch (e) { /* fall through */ }
   }
-  return clone(window.SITE_DATA);
+  return freshDraft();
 }
 function saveDraft() {
   const st = $('#saveState');
@@ -97,6 +110,10 @@ function fArea(label, path, val, rows = 3) {
 function fList(label, path, arr, hint = 'عنصر واحد في كل سطر') {
   return `<div class="field"><label>${esc(label)} <span class="muted">(${esc(hint)})</span></label>
     <textarea data-path-list="${path}" rows="${Math.max(3, (arr || []).length)}">${esc((arr || []).join('\n'))}</textarea></div>`;
+}
+function fNum(label, path, val) {
+  return `<div class="field"><label>${esc(label)}</label>
+    <input type="number" min="0" max="100" step="1" data-num-path="${path}" value="${val === '' || val == null ? '' : esc(val)}"></div>`;
 }
 function fIcon(label, path, val) {
   const opts = ICON_OPTIONS.map(k => `<option value="${k}" ${k === val ? 'selected' : ''}>${k}</option>`).join('');
@@ -249,6 +266,77 @@ function panelContact() {
   </div>`;
 }
 
+/* ---------- Section: grades (درجاتي) ---------- */
+function gradeSubjectRow(li, si, k, sub) {
+  const base = `meta.grades.levels.${li}.semesters.${si}.subjects.${k}`;
+  return `<div class="grade-row">
+    <div class="grid-2">
+      ${fText('المادة (عربي)', `${base}.name.ar`, (sub.name || {}).ar || '')}
+      ${fText('المادة (English)', `${base}.name.en`, (sub.name || {}).en || '')}
+    </div>
+    <div class="grade-row__foot">
+      ${fNum('الدرجة', `${base}.grade`, sub.grade)}
+      <button class="btn btn--danger btn--xs" data-grade-del-subject="${li}.${si}.${k}">حذف المادة</button>
+    </div>
+  </div>`;
+}
+function gradeSemesterBlock(li, si, sem) {
+  const base = `meta.grades.levels.${li}.semesters.${si}`;
+  const subjects = (sem.subjects || []).map((sub, k) => gradeSubjectRow(li, si, k, sub)).join('');
+  return `<div class="item is-open grade-sem-block">
+    <div class="item__head">
+      <span class="item__title">${esc((sem.name || {}).ar || 'فصل')}</span>
+      <div class="item__actions">
+        <button class="btn btn--danger btn--xs" data-grade-del-semester="${li}.${si}">حذف الفصل</button>
+      </div>
+    </div>
+    <div class="item__body">
+      <div class="grid-2">
+        ${fText('اسم الفصل (عربي)', `${base}.name.ar`, (sem.name || {}).ar || '')}
+        ${fText('اسم الفصل (English)', `${base}.name.en`, (sem.name || {}).en || '')}
+      </div>
+      <label class="grade-check"><input type="checkbox" data-grade-recorded data-grade-li="${li}" data-grade-si="${si}" ${sem.recorded ? 'checked' : ''}> الفصل مرصود (تظهر الدرجات)</label>
+      <h4 class="h3">المواد والدرجات</h4>
+      ${subjects || '<div class="empty">لا توجد مواد. اضغط «إضافة مادة».</div>'}
+      <button class="btn btn--primary btn--sm" data-grade-add-subject="${li}.${si}">+ إضافة مادة</button>
+    </div>
+  </div>`;
+}
+function gradeLevelBlock(li, lv) {
+  const base = `meta.grades.levels.${li}`;
+  const sems = (lv.semesters || []).map((s, si) => gradeSemesterBlock(li, si, s)).join('');
+  return `<div class="item is-open grade-level-block">
+    <div class="item__head">
+      <span class="item__title">${esc((lv.name || {}).ar || 'مستوى')}</span>
+      <div class="item__actions">
+        <button class="btn btn--danger btn--xs" data-grade-del-level="${li}">حذف المستوى</button>
+      </div>
+    </div>
+    <div class="item__body">
+      <div class="grid-2">
+        ${fText('اسم المستوى (عربي)', `${base}.name.ar`, (lv.name || {}).ar || '')}
+        ${fText('اسم المستوى (English)', `${base}.name.en`, (lv.name || {}).en || '')}
+        ${fText('العام الجامعي', `${base}.year`, lv.year || '')}
+      </div>
+      <h4 class="h3">الفصول الدراسية</h4>
+      ${sems || '<div class="empty">لا توجد فصول.</div>'}
+      <button class="btn btn--primary btn--sm" data-grade-add-semester="${li}">+ إضافة فصل</button>
+    </div>
+  </div>`;
+}
+function panelGrades() {
+  const G = (state.draft.meta && state.draft.meta.grades) || { levels: [] };
+  const levels = (G.levels || []).map((lv, li) => gradeLevelBlock(li, lv)).join('');
+  return `
+  <div class="panel">
+    <div class="panel__head">
+      <div><h2>درجاتي الأكاديمية</h2><p class="muted">عدّل المستويات والفصول والمواد ودرجاتها. الدرجات تظهر في زر «درجاتي» على الموقع.</p></div>
+      <button class="btn btn--primary btn--sm" data-grade-add-level>+ إضافة مستوى</button>
+    </div>
+    ${levels || '<div class="empty">لا توجد مستويات. اضغط «إضافة مستوى».</div>'}
+  </div>`;
+}
+
 /* ---------- Panel registry ---------- */
 const PANELS = [
   { id: 'identity', icon: '🏠', title: 'الرئيسية', render: panelIdentity },
@@ -297,6 +385,7 @@ const PANELS = [
         { key: 'icon', label: 'الأيقونة', type: 'icon' }
       ] }) },
   { id: 'nav', icon: '🧭', title: 'القائمة والتذييل', render: panelNav },
+  { id: 'grades', icon: '🎯', title: 'درجاتي', render: panelGrades },
   { id: 'contact', icon: '📞', title: 'التواصل', render: panelContact },
   { id: 'requests', icon: '📥', title: 'طلبات السيرة', render: panelRequests },
   { id: 'cvfile', icon: '📄', title: 'ملف السيرة', render: panelCvFile }
@@ -330,6 +419,12 @@ function bindEditing() {
 
   main.addEventListener('input', (e) => {
     const el = e.target;
+    if (el.dataset.numPath) {
+      const raw = el.value.trim();
+      setField(el.dataset.numPath, raw === '' ? '' : Number(raw));
+      scheduleSave();
+      return;
+    }
     if (el.dataset.path) {
       setField(el.dataset.path, el.value);
       if (el.dataset.imgPreview) return;
@@ -342,6 +437,11 @@ function bindEditing() {
   });
   main.addEventListener('change', (e) => {
     const el = e.target;
+    if (el.dataset.gradeRecorded !== undefined) {
+      setField(`meta.grades.levels.${el.dataset.gradeLi}.semesters.${el.dataset.gradeSi}.recorded`, el.checked);
+      scheduleSave();
+      return;
+    }
     if (el.tagName === 'SELECT' && el.dataset.path) {
       setField(el.dataset.path, el.value);
       scheduleSave();
@@ -349,6 +449,7 @@ function bindEditing() {
   });
 
   main.addEventListener('click', (e) => {
+    if (handleGradeClick(e)) return;
     const add = e.target.closest('[data-add]');
     if (add) { addItem(add.dataset.add); return; }
     const del = e.target.closest('[data-del]');
@@ -402,6 +503,62 @@ function moveItem(path, dir) {
   if (!Array.isArray(arr) || j < 0 || j >= arr.length) return;
   [arr[idx], arr[j]] = [arr[j], arr[idx]];
   renderPanel(); scheduleSave();
+}
+
+/* ---------- Grades CRUD ---------- */
+function gradesData() {
+  if (!state.draft.meta) state.draft.meta = {};
+  if (!state.draft.meta.grades) state.draft.meta.grades = { settings: {}, labels: {}, levels: [] };
+  if (!Array.isArray(state.draft.meta.grades.levels)) state.draft.meta.grades.levels = [];
+  return state.draft.meta.grades;
+}
+const NEW_LEVEL = () => ({ id: 'level-' + Date.now(), name: { ar: 'مستوى جديد', en: 'New Level' }, year: '', semesters: [] });
+const NEW_SEMESTER = () => ({ id: 's' + Date.now(), name: { ar: 'الفصل الدراسي الأول', en: 'First Semester' }, recorded: true, subjects: [] });
+const NEW_SUBJECT = () => ({ name: { ar: 'مادة جديدة', en: 'New Subject' }, grade: 0 });
+
+function handleGradeClick(e) {
+  const t = e.target.closest('button');
+  if (!t) return false;
+  const G = gradesData();
+
+  if (t.dataset.gradeAddLevel !== undefined) {
+    G.levels.push(NEW_LEVEL());
+    renderPanel(); scheduleSave(); toast('تمت إضافة مستوى', 'ok'); return true;
+  }
+  if (t.dataset.gradeDelLevel !== undefined) {
+    if (!confirm('حذف هذا المستوى وكل فصوله؟')) return true;
+    G.levels.splice(Number(t.dataset.gradeDelLevel), 1);
+    renderPanel(); scheduleSave(); return true;
+  }
+  if (t.dataset.gradeAddSemester !== undefined) {
+    const lv = G.levels[Number(t.dataset.gradeAddSemester)];
+    if (!lv) return true;
+    if (!Array.isArray(lv.semesters)) lv.semesters = [];
+    lv.semesters.push(NEW_SEMESTER());
+    renderPanel(); scheduleSave(); return true;
+  }
+  if (t.dataset.gradeDelSemester !== undefined) {
+    if (!confirm('حذف هذا الفصل وكل مواده؟')) return true;
+    const [li, si] = t.dataset.gradeDelSemester.split('.').map(Number);
+    const lv = G.levels[li]; if (lv && Array.isArray(lv.semesters)) lv.semesters.splice(si, 1);
+    renderPanel(); scheduleSave(); return true;
+  }
+  if (t.dataset.gradeAddSubject !== undefined) {
+    const [li, si] = t.dataset.gradeAddSubject.split('.').map(Number);
+    const sem = G.levels[li] && G.levels[li].semesters && G.levels[li].semesters[si];
+    if (!sem) return true;
+    if (!Array.isArray(sem.subjects)) sem.subjects = [];
+    sem.subjects.push(NEW_SUBJECT());
+    renderPanel(); scheduleSave(); return true;
+  }
+  if (t.dataset.gradeDelSubject !== undefined) {
+    if (!confirm('حذف هذه المادة؟')) return true;
+    const [li, si, k] = t.dataset.gradeDelSubject.split('.').map(Number);
+    const sem = G.levels[li] && G.levels[li].semesters && G.levels[li].semesters[si];
+    if (sem && Array.isArray(sem.subjects)) sem.subjects.splice(k, 1);
+    renderPanel(); scheduleSave(); return true;
+  }
+  return false;
 }
 
 /* ---------- Image upload (compress → dataURL) ---------- */
@@ -883,7 +1040,7 @@ function initEditor() {
   $('#resetBtn').addEventListener('click', () => {
     if (!confirm('سيتم استرجاع المحتوى الأصلي وإلغاء كل التعديلات. متابعة؟')) return;
     localStorage.removeItem(LS_DRAFT);
-    state.draft = clone(window.SITE_DATA);
+    state.draft = freshDraft();
     render();
     toast('تم استرجاع المحتوى الأصلي', 'ok');
   });
