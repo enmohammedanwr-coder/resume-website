@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>محمد أنور عمران | مطوّر برمجيات ومتخصص نظم معلومات</title>
+
+  <!-- SEO -->
+  <meta name="description" content="الموقع الشخصي لمحمد أنور يحي أحمد عمران — خريج نظم معلومات حاسوبية، مطور مواقع وتطبيقات، متخصص في قواعد البيانات وتقنية المعلومات. سيرة ذاتية، مشاريع، وخدمات تقنية." />
+  <meta name="keywords" content="محمد أنور عمران, Mohammed Anwar Omran, مطور برمجيات, نظم معلومات حاسوبية, تطوير مواقع, تطوير تطبيقات, قواعد بيانات, PHP, C#, Python, Android, تقنية المعلومات" />
+  <meta name="author" content="Mohammed Anwar Yahya Ahmed Omran" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#060b18" />
+  <link rel="canonical" href="https://enmohammedanwr-coder.github.io/resume-website/home" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="محمد أنور عمران | مطوّر برمجيات ومتخصص نظم معلومات" />
+  <meta property="og:description" content="الموقع الشخصي لمحمد أنور عمران — سيرة ذاتية، مشاريع، وخدمات تقنية متكاملة." />
+  <meta property="og:image" content="https://enmohammedanwr-coder.github.io/resume-website/assets/img/profile.jpg" />
+  <meta property="og:url" content="https://enmohammedanwr-coder.github.io/resume-website/home" />
+  <meta property="og:locale" content="ar_AR" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="محمد أنور عمران | مطوّر برمجيات ومتخصص نظم معلومات" />
+  <meta name="twitter:description" content="الموقع الشخصي لمحمد أنور عمران — سيرة ذاتية، مشاريع، وخدمات تقنية متكاملة." />
+  <meta name="twitter:image" content="https://enmohammedanwr-coder.github.io/resume-website/assets/img/profile.jpg" />
+
+  <!-- Fonts (Arabic + Latin) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/css/style.css?v=7" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23060b18'/%3E%3Ctext x='50' y='68' font-size='58' font-family='Arial' font-weight='bold' fill='%2338bdf8' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Mohammed Anwar Yahya Ahmed Omran",
+    "alternateName": "محمد أنور يحي أحمد عمران",
+    "jobTitle": "Software Developer & Computer Information Systems Specialist",
+    "alumniOf": "Amran University",
+    "knowsAbout": ["Software Development", "Web Development", "Databases", "Android Development", "Data Analysis", "Information Technology"],
+    "email": "mailto:En.mohammedanwr@gmail.com",
+    "telephone": "+967774931730"
+  }
+  </script>
+</head>
+<body>
+  <!-- Animated tech background -->
+  <div class="bg-canvas" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+    <canvas id="particles"></canvas>
+  </div>
+
+  <!-- ============ HEADER / NAV ============ -->
+  <header id="header" class="header">
+    <div class="container header__inner">
+      <a href="#home" class="brand">
+        <span class="brand__mark">M</span>
+        <span class="brand__text" data-field="brand">محمد أنور عمران</span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Main navigation">
+        <ul class="nav__list">
+          <li><a href="#home" class="nav__link" data-nav="home">الرئيسية</a></li>
+          <li><a href="#about" class="nav__link" data-nav="about">من أنا</a></li>
+          <li><a href="#projects" class="nav__link" data-nav="projects">مشاريعي</a></li>
+          <li><a href="#services" class="nav__link" data-nav="services">خدماتي</a></li>
+          <li><a href="#skills" class="nav__link" data-nav="skills">مهاراتي</a></li>
+          <li><a href="#qualifications" class="nav__link" data-nav="qualifications">مؤهلاتي</a></li>
+          <li><a href="#contact" class="nav__link" data-nav="contact">تواصل معي</a></li>
+        </ul>
+      </nav>
+
+      <div class="header__actions">
+        <button id="langToggle" class="icon-btn" title="تبديل اللغة / Switch language" aria-label="Switch language">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 6h-2.5a15.6 15.6 0 0 0-1.3-3.4A8 8 0 0 1 18.9 8ZM12 4.1c.7 1 1.4 2.3 1.9 3.9h-3.8c.5-1.6 1.2-2.9 1.9-3.9ZM4.3 14a8 8 0 0 1 0-4h2.9a17 17 0 0 0 0 4H4.3Zm.8 2h2.5c.3 1.2.8 2.4 1.3 3.4A8 8 0 0 1 5.1 16Zm2.5-8H5.1a8 8 0 0 1 3.8-3.4A15.6 15.6 0 0 0 7.6 8ZM12 19.9c-.7-1-1.4-2.3-1.9-3.9h3.8c-.5 1.6-1.2 2.9-1.9 3.9ZM14.3 14H9.7a17 17 0 0 1 0-4h4.6a17 17 0 0 1 0 4Zm1.6 5.4c.5-1 1-2.2 1.3-3.4h2.5a8 8 0 0 1-3.8 3.4Zm1.9-5.4a17 17 0 0 0 0-4h2.9a8 8 0 0 1 0 4h-2.9Z"/></svg>
+          <span class="icon-btn__label" id="langLabel">EN</span>
+        </button>
+
+        <button id="themeToggle" class="icon-btn" title="الوضع الداكن/الفاتح" aria-label="Toggle theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M21.3 12.9a9 9 0 1 1-10.2-10 7 7 0 0 0 10.2 10Z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 4v-2m0-18V3m9 9h-2M5 12H3m15.4-6.4-1.4 1.4M7 17l-1.4 1.4m0-12.8L7 7m10 10 1.4 1.4M12 12a5 5 0 0 0 0 0Z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        </button>
+
+        <button id="gradesToggle" class="icon-btn icon-btn--text" aria-expanded="false" aria-controls="gradesPanel" title="درجاتي / My Grades">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3 1 9l11 6 9-4.9V17a1 1 0 1 0 2 0V9l-11-6Zm-6 9.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-3.5l-6 3.3-6-3.3Z"/></svg>
+          <span class="icon-btn__label" data-grades-label>درجاتي</span>
+        </button>
+
+        <button id="menuToggle" class="menu-btn" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="scroll-progress" id="scrollProgress"></div>
+  </header>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section id="home" class="hero">
+      <div class="container hero__inner">
+        <div class="hero__content reveal">
+          <span class="hero__greeting" data-field="hero.greeting">مرحباً، أنا</span>
+          <h1 class="hero__name" data-field="hero.name">محمد أنور يحي أحمد عمران</h1>
+          <h2 class="hero__title" data-field="hero.title"></h2>
+          <p class="hero__tagline" data-field="hero.tagline"></p>
+
+          <div class="hero__buttons">
+            <a href="#projects" class="btn btn--primary" data-field="hero.buttons.projects">تعرّف على مشاريعي</a>
+            <a href="#skills" class="btn btn--ghost" data-field="hero.buttons.skills">اكتشف مهاراتي</a>
+            <a href="#contact" class="btn btn--ghost" data-field="hero.buttons.contact">تواصل معي</a>
+            <button type="button" id="cvRequestBtn" class="btn btn--accent" data-field="hero.buttons.cv">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a1 1 0 0 1 1 1v9.6l2.3-2.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L11 13.6V4a1 1 0 0 1 1-1ZM5 19a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Z"/></svg>
+            </button>
+          </div>
+
+          <div class="hero__social" id="heroSocial"></div>
+        </div>
+
+        <div class="hero__media reveal">
+          <div class="hero__photo-frame">
+            <div class="hero__photo-ring"></div>
+            <img id="profilePhoto" class="hero__photo" src="assets/img/profile.jpg" alt="صورة محمد أنور عمران" loading="eager" />
+            <div class="hero__badge">
+              <span class="dot"></span>
+              <span>متاح للعمل والمشاريع</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="#about" class="scroll-cue" aria-label="Scroll down"><span></span></a>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about" class="section">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="section__tag">01</span>
+          <h2 class="section__title" data-field="about.title">من أنا</h2>
+          <p class="section__subtitle" data-field="about.lead"></p>
+        </header>
+        <div class="about__grid">
+          <div class="about__text reveal" id="aboutText"></div>
+          <aside class="about__facts reveal" id="aboutFacts"></aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROJECTS ============ -->
+    <section id="projects" class="section section--alt">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="section__tag">02</span>
+          <h2 class="section__title" data-field="projects.title">مشاريعي السابقة</h2>
+          <p class="section__subtitle" data-field="projects.subtitle"></p>
+        </header>
+        <div class="cards-grid" id="projectsGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICES ============ -->
+    <section id="services" class="section">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="section__tag">03</span>
+          <h2 class="section__title" data-field="services.title">الخدمات التي أستطيع تقديمها</h2>
+          <p class="section__subtitle" data-field="services.subtitle"></p>
+        </header>
+        <div class="cards-grid cards-grid--services" id="servicesGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ SKILLS ============ -->
+    <section id="skills" class="section section--alt">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="section__tag">04</span>
+          <h2 class="section__title" data-field="skills.title">مهاراتي التقنية</h2>
+          <p class="section__subtitle" data-field="skills.subtitle"></p>
+        </header>
+        <div class="skills-grid" id="skillsGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ QUALIFICATIONS ============ -->
+    <section id="qualifications" class="section">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="section__tag">05</span>
+          <h2 class="section__title" data-field="qualifications.title">مؤهلاتي وشهاداتي</h2>
+          <p class="section__subtitle" data-field="qualifications.subtitle"></p>
+        </header>
+        <div class="qual__grid">
+          <div class="qual__col reveal">
+            <h3 class="qual__col-title" data-field="qualifications.eduTitle"></h3>
+            <div class="timeline" id="eduTimeline"></div>
+          </div>
+          <div class="qual__col reveal">
+            <h3 class="qual__col-title" data-field="qualifications.certTitle"></h3>
+            <div class="timeline" id="certTimeline"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHY ME ============ -->
+    <section id="why" class="section section--alt">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="section__tag">06</span>
+          <h2 class="section__title" data-field="why.title">لماذا تختار العمل معي؟</h2>
+          <p class="section__subtitle" data-field="why.subtitle"></p>
+        </header>
+        <div class="why-grid" id="whyGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact" class="section">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="section__tag">07</span>
+          <h2 class="section__title" data-field="contact.title">تواصل معي</h2>
+          <p class="section__subtitle" data-field="contact.subtitle"></p>
+        </header>
+        <div class="contact__grid">
+          <div class="contact__info reveal" id="contactInfo"></div>
+
+          <form class="contact__form reveal" id="contactForm" novalidate>
+            <div class="field">
+              <label for="cf-name" data-field="contact.form.name"></label>
+              <input type="text" id="cf-name" name="name" autocomplete="name" required />
+              <small class="field__error" data-err="name"></small>
+            </div>
+            <div class="field">
+              <label for="cf-email" data-field="contact.form.email"></label>
+              <input type="email" id="cf-email" name="email" autocomplete="email" required />
+              <small class="field__error" data-err="email"></small>
+            </div>
+            <div class="field">
+              <label for="cf-subject" data-field="contact.form.subject"></label>
+              <input type="text" id="cf-subject" name="subject" required />
+              <small class="field__error" data-err="subject"></small>
+            </div>
+            <div class="field">
+              <label for="cf-message" data-field="contact.form.message"></label>
+              <textarea id="cf-message" name="message" rows="5" required></textarea>
+              <small class="field__error" data-err="message"></small>
+            </div>
+            <!-- Honeypot anti-spam -->
+            <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
+            <button type="submit" class="btn btn--primary btn--block" id="cfSubmit" data-field="contact.form.submit"></button>
+            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="brand__mark">M</span>
+        <div>
+          <strong data-field="brand">محمد أنور عمران</strong>
+          <p id="footerBuilt"></p>
+        </div>
+      </div>
+      <div class="footer__social" id="footerSocial"></div>
+      <p class="footer__copy">© <span id="year"></span> <span data-field="brand">محمد أنور عمران</span> — <span id="footerRights"></span></p>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 5a1 1 0 0 1 .7.3l6 6a1 1 0 1 1-1.4 1.4L13 8.4V19a1 1 0 1 1-2 0V8.4l-4.3 4.3a1 1 0 1 1-1.4-1.4l6-6A1 1 0 0 1 12 5Z"/></svg>
+  </button>
+
+  <!-- Project modal -->
+  <div class="modal" id="projectModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__dialog">
+      <button class="modal__close" data-close aria-label="Close">&times;</button>
+      <div class="modal__media"><img id="modalImg" src="" alt="" /></div>
+      <div class="modal__body">
+        <h3 id="modalTitle"></h3>
+        <div class="tags" id="modalTags"></div>
+        <p id="modalDesc"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ GRADES PANEL (hidden by default) ============ -->
+  <section class="grades-panel" id="gradesPanel" aria-hidden="true" role="region" aria-label="درجاتي">
+    <div class="grades-panel__inner">
+      <header class="grades-panel__head">
+        <div>
+          <h2 class="grades-panel__title" data-grades-title>درجاتي الأكاديمية</h2>
+          <p class="grades-panel__subtitle" data-grades-subtitle></p>
+        </div>
+        <button class="grades-panel__close" id="gradesClose" aria-label="إغلاق">&times;</button>
+      </header>
+      <div class="grades-panel__body" id="gradesBody"></div>
+    </div>
+  </section>
+
+  <!-- ============ CV REQUEST MODAL ============ -->
+  <div class="modal" id="cvModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="cvModalTitle">
+    <div class="modal__backdrop" data-cv-close></div>
+    <div class="modal__dialog modal__dialog--form">
+      <button class="modal__close" data-cv-close aria-label="إغلاق">&times;</button>
+      <h3 id="cvModalTitle" data-cv="title">طلب تنزيل السيرة الذاتية (PDF)</h3>
+      <p class="muted" data-cv="intro"></p>
+
+      <form id="cvRequestForm" novalidate>
+        <div class="field">
+          <label for="cv-name" data-cv="nameLabel"></label>
+          <input type="text" id="cv-name" name="name" autocomplete="name" required />
+          <small class="field__error" data-cv-err="name"></small>
+        </div>
+        <div class="field">
+          <label for="cv-email" data-cv="emailLabel"></label>
+          <input type="email" id="cv-email" name="email" autocomplete="email" required />
+          <small class="field__error" data-cv-err="email"></small>
+        </div>
+        <div class="field">
+          <label for="cv-reason" data-cv="reasonLabel"></label>
+          <textarea id="cv-reason" name="reason" rows="3"></textarea>
+        </div>
+        <!-- Honeypot anti-spam -->
+        <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
+
+        <div class="cv-actions">
+          <button type="submit" class="btn btn--primary" id="cvSubmit" data-cv="submit"></button>
+          <a class="btn btn--accent" id="cvWhatsapp" href="#" target="_blank" rel="noopener" data-cv="whatsapp"></a>
+        </div>
+        <p class="form-status" id="cvStatus" role="status" aria-live="polite"></p>
+        <p class="cv-have"><a href="#" id="cvHaveToken" data-cv="haveToken"></a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ CV CONSENT / DOWNLOAD MODAL ============ -->
+  <div class="modal" id="cvConsentModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="cvConsentTitle">
+    <div class="modal__backdrop" data-consent-close></div>
+    <div class="modal__dialog modal__dialog--form">
+      <button class="modal__close" data-consent-close aria-label="إغلاق">&times;</button>
+      <h3 id="cvConsentTitle" data-consent="title"></h3>
+      <p class="muted" data-consent="intro"></p>
+      <ul class="consent-list" id="cvConsentList"></ul>
+      <label class="consent-check">
+        <input type="checkbox" id="cvConsentAgree" />
+        <span data-consent="agree"></span>
+      </label>
+      <div class="cv-actions">
+        <button type="button" class="btn btn--primary" id="cvConsentDownload" disabled data-consent="download"></button>
+        <button type="button" class="btn btn--ghost" id="cvConsentCancel" data-consent="cancel" data-consent-close></button>
+      </div>
+      <p class="form-status" id="cvConsentStatus" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <script src="assets/js/data.js?v=7"></script>
+  <script src="assets/js/grades.js?v=7"></script>
+  <script src="assets/js/app.js?v=7"></script>
+  <script src="assets/js/grades-ui.js?v=7"></script>
+  <script src="assets/js/cv-request.js?v=7"></script>
+</body>
+</html>
