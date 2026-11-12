@@ -11,8 +11,8 @@ uploads**, and a **request → approval → consent → signed download** flow.
 | Route | File | Purpose |
 | ----- | ---- | ------- |
 | `/`         | `index.html` | Landing page: his name, a **Home** button, and a **hidden** dashboard entry (discreet corner dot + `Ctrl/Cmd+Shift+A` + typing `admin`). Not advertised. |
-| `/home`     | `home.html`  | The CV site itself (rewrite in `_redirects`). |
-| `/admin`    | `admin.html` | Dashboard: login gate + editor (rewrite in `_redirects`). `noindex`. |
+| `/home`     | `home.html`  | The CV site itself. Pages maps the extensionless path to the file automatically — **do not** add a rewrite for it (that caused a redirect loop). |
+| `/admin`    | `admin.html` | Dashboard: login gate + editor. Same auto-mapping. `noindex`. |
 
 ## Layout
 - `index.html` — landing page (name, Home, discreet admin entry).
@@ -88,6 +88,19 @@ functions dir `functions` (repo root). See `DEPLOY.md` for the full setup.
 Required Cloudflare config: KV binding `CV_KV`; env vars `ADMIN_PASSWORD_HASH`
 (preferred) or `ADMIN_PASSWORD`, `ADMIN_KEY`, `TOKEN_SECRET`; optional `SITE_URL`,
 `MAIL_API_KEY`, `MAIL_FROM`, `NOTIFY_EMAIL`, `TURNSTILE_SECRET`.
+
+> **PBKDF2 limit:** Cloudflare Workers WebCrypto rejects PBKDF2 iteration counts
+> **above 100000** (`Pbkdf2 failed: iteration counts above 100000 are not supported`).
+> `tools/admin/make-admin-hash.py` uses 100000; a hash generated with more will make
+> every login fail with a 500 (`server_error`). `verifyPassword` now fails closed
+> instead of throwing.
+
+> **Extensionless routes:** Pages already serves `/home` from `home.html`. A `_redirects`
+> 200-rewrite for it produces a 308 loop. `_redirects` only keeps the `/assets/cv/*` guard.
+
+> **Live grades:** academic grades are edited in the dashboard («درجاتي» panel) and stored
+> under `meta.grades`; the site reads `window.GRADES_DATA` from there and falls back to the
+> bundled `assets/js/grades.js` when KV content is absent.
 
 > Important: the CV PDFs are built into `tools/cv/dist/` (outside the deploy output and
 > gitignored) and uploaded to KV only — **never** commit them or publish them as assets.
