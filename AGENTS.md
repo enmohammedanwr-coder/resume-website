@@ -102,6 +102,24 @@ Required Cloudflare config: KV binding `CV_KV`; env vars `ADMIN_PASSWORD_HASH`
 > under `meta.grades`; the site reads `window.GRADES_DATA` from there and falls back to the
 > bundled `assets/js/grades.js` when KV content is absent.
 
+## Security model
+- **CSP** is set in `tools/build-site.py` (`HEADERS`) and emitted into `public/_headers`:
+  `script-src 'self'` (no `unsafe-inline`), `style-src` allows `'unsafe-inline'` +
+  Google Fonts (404.html has an inline `<style>`, admin uses `style=` attributes),
+  `connect-src` allow-lists the GitHub API, Formspree/Web3Forms and Cloudflare Turnstile.
+  Because inline scripts are blocked, **never** add `on*=` attributes or inline `<script>`
+  (JSON-LD `type="application/ld+json"` is data and is fine). Broken-image hiding uses a
+  delegated `error` listener keyed on `data-hide-on-error`, not `onerror`.
+- **XSS:** `assets/js/app.js` renders content via `innerHTML`, so every interpolated value
+  goes through `esc()` and every `href`/`src` through `safeUrl()` (drops non-http/mailto/tel
+  schemes). `admin.js`, `grades-ui.js`, `cv-request.js` already escape. Keep this invariant
+  when adding new rendered fields.
+- **API responses** (`functions/api/_lib.js` `SECURITY_HEADERS`) carry `default-src 'none'`
+  CSP + COOP/CORP + `nosniff` + `frame-ancestors 'none'`.
+
+> Note: no `Content-Security-Policy` existed before this hardening; `_headers` is generated,
+> so edit `HEADERS` in `tools/build-site.py`, not `public/_headers`.
+
 > Important: the CV PDFs are built into `tools/cv/dist/` (outside the deploy output and
 > gitignored) and uploaded to KV only — **never** commit them or publish them as assets.
 
