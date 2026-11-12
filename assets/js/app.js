@@ -45,6 +45,17 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const get = (obj, path) => path.split('.').reduce((o, k) => (o ? o[k] : undefined), obj);
 
+/* ---------- Escaping (defense-in-depth against stored XSS) ---------- */
+const ESC_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ESC_MAP[c]);
+
+// Only allow safe URL schemes in href/src; everything else is dropped.
+function safeUrl(u) {
+  const s = String(u ?? '').trim();
+  if (/^(https?:|mailto:|tel:|\/|#)/i.test(s)) return esc(s);
+  return '';
+}
+
 /* ---------- Rendering ---------- */
 function render() {
   const L = state.data[state.lang];
@@ -74,23 +85,23 @@ function render() {
   $('#footerRights').textContent = L.footer.rights;
 
   // About
-  $('#aboutText').innerHTML = L.about.paragraphs.map(p => `<p>${p}</p>`).join('');
+  $('#aboutText').innerHTML = L.about.paragraphs.map(p => `<p>${esc(p)}</p>`).join('');
   $('#aboutFacts').innerHTML = L.about.facts.map(f => `
-    <div class="fact"><span class="fact__label">${f.label}</span><span class="fact__value">${f.value}</span></div>
+    <div class="fact"><span class="fact__label">${esc(f.label)}</span><span class="fact__value">${esc(f.value)}</span></div>
   `).join('');
 
   // Projects
   $('#projectsGrid').innerHTML = L.projects.items.map(p => `
-    <article class="card reveal" data-project="${p.id}">
+    <article class="card reveal" data-project="${esc(p.id)}">
       <div class="card__media">
-        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
-        <span class="card__tech-badge tags">${p.tech.map(t => `<span class="tag">${t}</span>`).join('')}</span>
+        <img src="${safeUrl(p.image)}" alt="${esc(p.name)}" loading="lazy" data-hide-on-error>
+        <span class="card__tech-badge tags">${p.tech.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</span>
       </div>
       <div class="card__body">
-        <h3 class="card__title">${p.name}</h3>
-        <p class="card__desc">${p.short}</p>
+        <h3 class="card__title">${esc(p.name)}</h3>
+        <p class="card__desc">${esc(p.short)}</p>
         <div class="card__actions">
-          <button class="btn btn--ghost btn--sm" data-open="${p.id}">${L.projects.viewDetails}</button>
+          <button class="btn btn--ghost btn--sm" data-open="${esc(p.id)}">${esc(L.projects.viewDetails)}</button>
         </div>
       </div>
     </article>
@@ -100,10 +111,10 @@ function render() {
   $('#servicesGrid').innerHTML = L.services.items.map((s, i) => `
     <article class="card service-card reveal">
       <div class="icon-wrap">${icon(s.icon)}</div>
-      <h3>${s.name}</h3>
-      <p>${s.desc}</p>
+      <h3>${esc(s.name)}</h3>
+      <p>${esc(s.desc)}</p>
       <div class="card__actions">
-        <button class="btn btn--primary btn--sm" data-request="${i}">${L.services.request}</button>
+        <button class="btn btn--primary btn--sm" data-request="${i}">${esc(L.services.request)}</button>
       </div>
     </article>
   `).join('');
@@ -113,18 +124,18 @@ function render() {
     <div class="skill-card reveal">
       <div class="skill-card__head">
         <div class="icon-wrap">${icon(g.icon)}</div>
-        <h3>${g.title}</h3>
+        <h3>${esc(g.title)}</h3>
       </div>
-      <div class="chips">${g.items.map(i => `<span class="chip">${i}</span>`).join('')}</div>
+      <div class="chips">${g.items.map(i => `<span class="chip">${esc(i)}</span>`).join('')}</div>
     </div>
   `).join('');
 
   // Qualifications
   const tl = (arr) => arr.map(x => `
     <div class="tl-item">
-      <h4>${x.title}</h4>
-      <p class="tl-org">${x.org}</p>
-      ${x.meta ? `<span class="tl-meta">${x.meta}</span>` : ''}
+      <h4>${esc(x.title)}</h4>
+      <p class="tl-org">${esc(x.org)}</p>
+      ${x.meta ? `<span class="tl-meta">${esc(x.meta)}</span>` : ''}
     </div>`).join('');
   $('#eduTimeline').innerHTML = tl(L.qualifications.edu);
   $('#certTimeline').innerHTML = tl(L.qualifications.certs);
@@ -133,8 +144,8 @@ function render() {
   $('#whyGrid').innerHTML = L.why.items.map(w => `
     <div class="why-card reveal">
       <div class="icon-wrap">${icon(w.icon)}</div>
-      <h3>${w.title}</h3>
-      <p>${w.desc}</p>
+      <h3>${esc(w.title)}</h3>
+      <p>${esc(w.desc)}</p>
     </div>
   `).join('');
 
@@ -143,16 +154,16 @@ function render() {
   $('#contactInfo').innerHTML = `
     <div class="info-card">
       <div class="icon-wrap">${icon('phone')}</div>
-      <div><div class="info-label">${L.contact.phoneLabel}</div><div class="info-value">${M.phone}</div></div>
+      <div><div class="info-label">${esc(L.contact.phoneLabel)}</div><div class="info-value">${esc(M.phone)}</div></div>
     </div>
     ${M.emails.map(e => `
       <div class="info-card">
         <div class="icon-wrap">${icon('mail')}</div>
-        <div><div class="info-label">${L.contact.emailLabel}</div><div class="info-value">${e}</div></div>
+        <div><div class="info-label">${esc(L.contact.emailLabel)}</div><div class="info-value">${esc(e)}</div></div>
       </div>`).join('')}
     <div class="info-buttons">
-      <a class="btn btn--accent" href="https://wa.me/${M.whatsapp}?text=${encodeURIComponent(waText)}" target="_blank" rel="noopener">${icon('whatsapp')}<span>${L.contact.whatsappBtn}</span></a>
-      <a class="btn btn--ghost" href="mailto:${M.emails[0]}">${icon('mail')}<span>${L.contact.emailBtn}</span></a>
+      <a class="btn btn--accent" href="https://wa.me/${encodeURIComponent(M.whatsapp)}?text=${encodeURIComponent(waText)}" target="_blank" rel="noopener">${icon('whatsapp')}<span>${esc(L.contact.whatsappBtn)}</span></a>
+      <a class="btn btn--ghost" href="mailto:${esc(M.emails[0])}">${icon('mail')}<span>${esc(L.contact.emailBtn)}</span></a>
     </div>
   `;
 
@@ -180,11 +191,11 @@ function mapField(id, label, ph) {
 
 function renderSocial(social) {
   const links = [];
-  if (social.github) links.push(`<a href="${social.github}" target="_blank" rel="noopener" aria-label="GitHub">${icon('github')}</a>`);
-  if (social.linkedin) links.push(`<a href="${social.linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">${icon('linkedin')}</a>`);
-  if (social.twitter) links.push(`<a href="${social.twitter}" target="_blank" rel="noopener" aria-label="Twitter">${icon('twitter')}</a>`);
-  links.push(`<a href="mailto:${state.data.meta.emails[0]}" aria-label="Email">${icon('mail')}</a>`);
-  links.push(`<a href="https://wa.me/${state.data.meta.whatsapp}" target="_blank" rel="noopener" aria-label="WhatsApp">${icon('whatsapp')}</a>`);
+  if (social.github) links.push(`<a href="${safeUrl(social.github)}" target="_blank" rel="noopener" aria-label="GitHub">${icon('github')}</a>`);
+  if (social.linkedin) links.push(`<a href="${safeUrl(social.linkedin)}" target="_blank" rel="noopener" aria-label="LinkedIn">${icon('linkedin')}</a>`);
+  if (social.twitter) links.push(`<a href="${safeUrl(social.twitter)}" target="_blank" rel="noopener" aria-label="Twitter">${icon('twitter')}</a>`);
+  links.push(`<a href="mailto:${esc(state.data.meta.emails[0])}" aria-label="Email">${icon('mail')}</a>`);
+  links.push(`<a href="https://wa.me/${encodeURIComponent(state.data.meta.whatsapp)}" target="_blank" rel="noopener" aria-label="WhatsApp">${icon('whatsapp')}</a>`);
   const html = links.join('');
   $('#heroSocial').innerHTML = html;
   $('#footerSocial').innerHTML = html;
@@ -271,10 +282,10 @@ function openProject(id) {
   const L = state.data[state.lang];
   const p = L.projects.items.find(x => x.id === id);
   if (!p) return;
-  $('#modalImg').src = p.image;
+  $('#modalImg').src = safeUrl(p.image);
   $('#modalImg').alt = p.name;
   $('#modalTitle').textContent = p.name;
-  $('#modalTags').innerHTML = p.tech.map(t => `<span class="tag">${t}</span>`).join('');
+  $('#modalTags').innerHTML = p.tech.map(t => `<span class="tag">${esc(t)}</span>`).join('');
   $('#modalDesc').textContent = p.details;
   modal.classList.add('open');
   modal.setAttribute('aria-hidden', 'false');
@@ -293,6 +304,14 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('[data-close]')) closeModal();
 });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+/* Hide broken images without inline handlers (keeps a strict CSP possible). */
+document.addEventListener('error', (e) => {
+  const t = e.target;
+  if (t && t.tagName === 'IMG' && t.hasAttribute('data-hide-on-error')) {
+    t.style.display = 'none';
+  }
+}, true);
 
 /* Service request → focus contact form + prefill */
 function requestService(index) {

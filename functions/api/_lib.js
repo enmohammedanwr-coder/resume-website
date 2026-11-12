@@ -13,6 +13,11 @@ export const SECURITY_HEADERS = {
   'x-content-type-options': 'nosniff',
   'referrer-policy': 'no-referrer',
   'x-frame-options': 'DENY',
+  'cross-origin-opener-policy': 'same-origin',
+  'cross-origin-resource-policy': 'same-origin',
+  'content-security-policy':
+    "default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; " +
+    "base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
 };
 
 export function json(body, status = 200, extra = {}) {
