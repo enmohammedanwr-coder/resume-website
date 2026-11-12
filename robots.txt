@@ -6,4 +6,4 @@ Disallow: /api/
 # Preview/draft view is a personal editing state, not a public page
 Disallow: /*preview=1
 
-Sitemap: https://enmohammedanwr-coder.github.io/resume-website/sitemap.xml
+Sitemap: https://resume-website-666.pages.dev/sitemap.xml
