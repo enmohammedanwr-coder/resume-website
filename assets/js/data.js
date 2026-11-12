@@ -5,8 +5,8 @@
 
 const SITE_DATA = {
   "meta": {
-    "photo": "assets/img/upload-4d67c951.jpg",
-    "apiBase": "",
+    "photo": "assets/img/upload-e7f6cda5.jpg",
+    "cvFile": "assets/cv/Mohammed-Anwar-CV.pdf",
     "phone": "+967774931730",
     "whatsapp": "967774931730",
     "emails": [
@@ -100,28 +100,28 @@ const SITE_DATA = {
                     "ar": "الثقافة الإسلامية",
                     "en": "Islamic Culture"
                   },
-                  "grade": 87
+                  "grade": 86
                 },
                 {
                   "name": {
                     "ar": "لغة إنجليزية (101)",
                     "en": "English Language (101)"
                   },
-                  "grade": 71
+                  "grade": 89
                 },
                 {
                   "name": {
                     "ar": "لغة عربية (101)",
                     "en": "Arabic Language (101)"
                   },
-                  "grade": 72
+                  "grade": 90
                 },
                 {
                   "name": {
                     "ar": "تفاضل وتكامل (1)",
                     "en": "Calculus (1)"
                   },
-                  "grade": 69
+                  "grade": 80
                 },
                 {
                   "name": {
@@ -142,7 +142,7 @@ const SITE_DATA = {
                     "ar": "برمجة حاسوب (1)",
                     "en": "Computer Programming (1)"
                   },
-                  "grade": 57
+                  "grade": 92
                 }
               ]
             },
@@ -178,42 +178,42 @@ const SITE_DATA = {
                     "ar": "أساسيات قواعد البيانات",
                     "en": "Fundamentals of Databases"
                   },
-                  "grade": 85
+                  "grade": 94
                 },
                 {
                   "name": {
                     "ar": "مبادئ شبكات الحاسوب",
                     "en": "Principles of Computer Networks"
                   },
-                  "grade": 80
+                  "grade": 83
                 },
                 {
                   "name": {
                     "ar": "أساسيات تكنولوجيا الويب",
                     "en": "Fundamentals of Web Technology"
                   },
-                  "grade": 76
+                  "grade": 90
                 },
                 {
                   "name": {
                     "ar": "مقدمة في نظم المعلومات",
                     "en": "Introduction to Information Systems"
                   },
-                  "grade": 62
+                  "grade": 92
                 },
                 {
                   "name": {
                     "ar": "رياضيات متقطعة",
                     "en": "Discrete Mathematics"
                   },
-                  "grade": 67
+                  "grade": 93
                 },
                 {
                   "name": {
                     "ar": "البرمجة الكائنية",
                     "en": "Object-Oriented Programming"
                   },
-                  "grade": 80
+                  "grade": 91
                 }
               ]
             },
@@ -249,7 +249,7 @@ const SITE_DATA = {
                     "ar": "تحليل وتصميم النظم",
                     "en": "Systems Analysis and Design"
                   },
-                  "grade": 86
+                  "grade": 87
                 },
                 {
                   "name": {
@@ -284,7 +284,7 @@ const SITE_DATA = {
                     "ar": "أساسيات نظم التشغيل",
                     "en": "Fundamentals of Operating Systems"
                   },
-                  "grade": 74
+                  "grade": 86
                 }
               ]
             },
@@ -320,7 +320,7 @@ const SITE_DATA = {
                     "ar": "نظم المعلومات الجغرافية",
                     "en": "Geographic Information Systems"
                   },
-                  "grade": 83
+                  "grade": 95
                 },
                 {
                   "name": {
@@ -341,14 +341,14 @@ const SITE_DATA = {
                     "ar": "نظم تخطيط موارد المشاريع",
                     "en": "Enterprise Resource Planning Systems"
                   },
-                  "grade": 87
+                  "grade": 90
                 },
                 {
                   "name": {
                     "ar": "البرمجة المتقدمة (اختياري 2)",
                     "en": "Advanced Programming (Elective 2)"
                   },
-                  "grade": 74
+                  "grade": 83
                 }
               ]
             },
@@ -388,14 +388,14 @@ const SITE_DATA = {
         "projects": "تعرّف على مشاريعي",
         "skills": "اكتشف مهاراتي",
         "contact": "تواصل معي",
-        "cv": "طلب تنزيل السيرة الذاتية PDF"
+        "cv": "تحميل السيرة الذاتية PDF"
       }
     },
     "about": {
       "title": "من أنا",
       "lead": "مطوّر ومتخصص في تقنية المعلومات، أجمع بين المعرفة التقنية والإدارية.",
       "paragraphs": [
-        "أنا محمد أنور يحي أحمد عمران، خريج كلية الهندسة وتقنية المعلومات بجامعة عمران، حاصل على بكالوريوس في نظم المعلومات الحاسوبية عام 2022 بمعدل 85%. أهتم بالبرمجة وتطوير الأنظمة وتحليل البيانات وقواعد البيانات، وبتحويل المتطلبات إلى حلول تقنية منظّمة وقابلة للتطوير.",
+        "أنا محمد أنور يحي أحمد عمران، خريج كلية الهندسة وتقنية المعلومات بجامعة عمران، حاصل على بكالوريوس في نظم المعلومات الحاسوبية عام 2026 بمعدل 91%. التقدير (ممتاز) أهتم بالبرمجة وتطوير الأنظمة وتحليل البيانات وقواعد البيانات، وبتحويل المتطلبات إلى حلول تقنية منظّمة وقابلة للتطوير.",
         "أمتلك خبرة أكاديمية وعملية في تطوير المواقع وتطبيقات الهاتف، وتصميم وإدارة قواعد البيانات، وبناء أنظمة المعلومات. كما أتمتع بمهارات في الإدارة والعمل الجماعي وحل المشكلات، واهتمام دائم بالتعلّم المستمر ومواكبة الأدوات التقنية الحديثة."
       ],
       "facts": [
@@ -413,11 +413,11 @@ const SITE_DATA = {
         },
         {
           "label": "التخرج",
-          "value": "2022"
+          "value": "2026"
         },
         {
           "label": "المعدل",
-          "value": "85%"
+          "value": "91%  ممتاز"
         }
       ]
     },
@@ -466,6 +466,28 @@ const SITE_DATA = {
           "short": "نظام إدارة مراكز التدريب، ويتضمن إصدار الشهادات.",
           "details": "نظام مبني بلغة PHP لإدارة بيانات المتدربين والدورات والبرامج التدريبية، ويتضمّن خاصية إصدار الشهادات. يمكن إضافة تفاصيل الوحدات وواجهات النظام هنا لاحقاً.",
           "image": "assets/img/project-training.jpg"
+        },
+        {
+          "name": "منصة إدارة مشارٌيع التخرج وربطها بالمؤسسات العامة",
+          "short": "لداء جامعه عمران الكثير  والكثير من العقول المبتكره هنك طلاب لديهم افكار وعقول ابتكاريه وللاستفاده من العقول المبتكره قمنا بعمل المنصه هذه وتشغيل العقول المثمره بالخير  ف بدلاٌ من ان يلجاء  الطالب ذات العقل المثمر  الى مشروع غير واقعي   والمجتمع ليس بحاجه اليه قمنا بعمل منصه اداره مشاريع التخرج وربطها بالموؤسسات العامة تجعل الطالب يعمل مشروع التخرج الخاص به مشروع واقعي بدلا من ان يجعله كتاب  من ضمن الكتب المتوفره في المكتبه جعلناه  يتنفذ في ارض الواقع   بفضل المنصه الذي تربط الموؤسسة  بمشاريع التخرج",
+          "details": "الموؤسسات لديها مشاكل وتحتاج لحل المشاكل تقوم بطرح المشاكل الخاصه بها في المنصه من خلال رفع المشكله وشرحهل  وتقوم بالرفع النضام المركزي يقوم بالاطلاع على المشكله هل هي مشكله حقيقيه وقابه لحل ام لا اذكانت حقيقيه يقوم بوضعها على المنصه اذاكانت لا يعمل على ازالتها الطالب مستوى رابع يمكنه الاطلاع على المشاريع المكتمله المشاريع قيد التطوير  والمشاريع الجديده ف الطالب يختار المشروع   او الفكره الذي قامت بطرحها الموؤسسة الوزاره تقوم بالتواصل مع الطاالب هل انت مستعد لعمل المشروع هذا حتى النهايه  الطلب (نعم) الوزاره تقوم بالتواصل مع الموؤسسة هناك اشخاص يريدون حل المثكله الخاصه بكم هل انتم مستعدون لدعمهم بالنت والقطع في حال احتياجها (الموؤسسة نعم ) الطالب يبدا العمل في هذا الحله الطالب عمل على مشروع واقعي وقابل لحل  ",
+          "tech": [
+            "php",
+            "html",
+            "css",
+            "javasecrpt",
+            "sql"
+          ],
+          "image": "assets/img/upload-1fbf91ed.jpg"
+        },
+        {
+          "name": "مشروع جديد",
+          "short": "",
+          "details": "",
+          "tech": [
+            "C#"
+          ],
+          "image": ""
         }
       ]
     },
@@ -662,14 +684,14 @@ const SITE_DATA = {
       "subtitle": "نقاط قوة أعتمد عليها في التعامل مع العملاء والشركات.",
       "items": [
         {
-          "icon": "thinking",
-          "title": "التفكير التحليلي",
-          "desc": "قدرة على تحليل المشكلات وتفكيكها للوصول إلى حلول منطقية فعّالة."
-        },
-        {
           "icon": "solution",
           "title": "القدرة على حل المشكلات",
           "desc": "معالجة التحديات التقنية والإدارية بحلول عملية قابلة للتطبيق."
+        },
+        {
+          "icon": "thinking",
+          "title": "التفكير التحليلي",
+          "desc": "قدرة على تحليل المشكلات وتفكيكها للوصول إلى حلول منطقية فعّالة."
         },
         {
           "icon": "details",
@@ -725,42 +747,6 @@ const SITE_DATA = {
         "errMessage": "الرجاء كتابة رسالة لا تقل عن 10 أحرف."
       }
     },
-    "cvRequest": {
-      "button": "طلب تنزيل السيرة الذاتية PDF",
-      "title": "طلب تنزيل السيرة الذاتية (PDF)",
-      "intro": "لا يتوفر ملف السيرة الذاتية للتنزيل المباشر. أرسل طلباً وسيصلني إشعار، وبعد موافقتي ستحصل على رابط تنزيل مؤقت.",
-      "nameLabel": "اسمك الكامل",
-      "namePh": "اكتب اسمك",
-      "emailLabel": "بريدك الإلكتروني",
-      "emailPh": "example@email.com",
-      "reasonLabel": "سبب الطلب (اختياري)",
-      "reasonPh": "مثال: للتقديم على وظيفة، أو لأغراض دراسية...",
-      "submit": "إرسال الطلب",
-      "sending": "جارٍ الإرسال...",
-      "whatsapp": "تواصل عبر واتساب",
-      "waText": "مرحباً، أرغب في طلب تنزيل سيرتك الذاتية (PDF).",
-      "success": "تم إرسال طلبك بنجاح ✅ سيصل إلى صاحب السيرة، وعند الموافقة ستحصل على رابط تنزيل. يمكنك أيضاً التواصل عبر واتساب لتسريع الرد.",
-      "notConfigured": "خدمة طلبات التنزيل غير مُفعّلة بعد. يمكنك التواصل مباشرة عبر واتساب أو البريد.",
-      "error": "تعذّر إرسال الطلب حالياً. يمكنك التواصل مباشرة عبر واتساب.",
-      "errName": "الرجاء إدخال اسمك.",
-      "errEmail": "الرجاء إدخال بريد إلكتروني صحيح.",
-      "haveToken": "لديك رمز موافقة بالفعل؟ تنزيل السيرة الذاتية"
-    },
-    "cvConsent": {
-      "title": "موافقة على استخدام السيرة الذاتية",
-      "intro": "قبل تنزيل الملف، يُرجى قراءة الشروط والموافقة عليها.",
-      "points": [
-        "يُستخدم هذا الملف لأغراض التوظيف أو التقييم الأكاديمي أو التعريف المهني فقط.",
-        "يُمنع إعادة نشر الملف أو بيعه أو تعديله دون إذن كتابي من صاحب السيرة.",
-        "البيانات الشخصية محمية، ويجب عدم استخدامها في أي غرض غير مشروع.",
-        "رابط التنزيل مؤقت ومرتبط بموافقتك، وقد يُلغى في أي وقت."
-      ],
-      "agree": "أوافق على الشروط أعلاه وأتعهد باستخدام الملف للأغراض المذكورة فقط.",
-      "download": "تنزيل السيرة الذاتية (PDF)",
-      "cancel": "إلغاء",
-      "noToken": "لا يوجد رمز موافقة صالح. يُرجى إرسال طلب تنزيل أولاً.",
-      "downloading": "جارٍ بدء التنزيل..."
-    },
     "footer": {
       "rights": "جميع الحقوق محفوظة",
       "built": "موقع شخصي احترافي",
@@ -789,7 +775,7 @@ const SITE_DATA = {
         "projects": "Explore My Projects",
         "skills": "Discover My Skills",
         "contact": "Contact Me",
-        "cv": "Request CV (PDF)"
+        "cv": "Download CV (PDF)"
       }
     },
     "about": {
@@ -1125,42 +1111,6 @@ const SITE_DATA = {
         "errSubject": "Please enter the subject.",
         "errMessage": "Please write a message of at least 10 characters."
       }
-    },
-    "cvRequest": {
-      "button": "Request CV (PDF) Download",
-      "title": "Request the CV (PDF) Download",
-      "intro": "The CV file is not available for direct download. Send a request and I will be notified; once I approve it, you will receive a temporary download link.",
-      "nameLabel": "Your full name",
-      "namePh": "Enter your name",
-      "emailLabel": "Your email",
-      "emailPh": "example@email.com",
-      "reasonLabel": "Reason (optional)",
-      "reasonPh": "e.g. applying for a job, academic use...",
-      "submit": "Send request",
-      "sending": "Sending...",
-      "whatsapp": "Chat on WhatsApp",
-      "waText": "Hello, I would like to request your CV (PDF).",
-      "success": "Your request was sent successfully ✅ It will reach the CV owner, and once approved you will receive a download link. You can also chat on WhatsApp for a faster reply.",
-      "notConfigured": "The download-request service is not activated yet. Please contact directly via WhatsApp or email.",
-      "error": "Could not send the request now. Please contact via WhatsApp.",
-      "errName": "Please enter your name.",
-      "errEmail": "Please enter a valid email.",
-      "haveToken": "Already have an approval code? Download the CV"
-    },
-    "cvConsent": {
-      "title": "CV Usage Consent",
-      "intro": "Before downloading the file, please read and accept the terms.",
-      "points": [
-        "This file is for recruitment, academic evaluation, or professional reference only.",
-        "Republishing, selling, or modifying the file without the owner's written permission is prohibited.",
-        "Personal data is protected and must not be used for any unlawful purpose.",
-        "The download link is temporary and tied to your consent; it may be revoked at any time."
-      ],
-      "agree": "I accept the terms above and will use the file only for the stated purposes.",
-      "download": "Download CV (PDF)",
-      "cancel": "Cancel",
-      "noToken": "No valid approval code. Please send a download request first.",
-      "downloading": "Starting download..."
     },
     "footer": {
       "rights": "All rights reserved",
