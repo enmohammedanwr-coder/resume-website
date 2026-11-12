@@ -74,7 +74,7 @@
        2) Ctrl/Cmd + Shift + A,
        3) typing the Konami-style sequence "admin".
      All of them just navigate to /admin, which enforces login server-side. */
-  var adminUrl = '/admin';
+  var adminUrl = 'admin';
 
   function goAdmin() { window.location.href = adminUrl; }
 
