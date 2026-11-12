@@ -120,6 +120,12 @@ Required Cloudflare config: KV binding `CV_KV`; env vars `ADMIN_PASSWORD_HASH`
 > Note: no `Content-Security-Policy` existed before this hardening; `_headers` is generated,
 > so edit `HEADERS` in `tools/build-site.py`, not `public/_headers`.
 
+> **Use relative links, never root-absolute.** The same HTML is served by two
+> hosts: Cloudflare Pages at the domain root (`/home` works) and GitHub Pages
+> from a subpath (`/resume-website/`, where `/home` 404s). Landing CTA, the 404
+> back-link and the discreet admin entry therefore use `home` / `.` / `admin`,
+> not `/home` / `/` / `/admin`.
+
 > Important: the CV PDFs are built into `tools/cv/dist/` (outside the deploy output and
 > gitignored) and uploaded to KV only — **never** commit them or publish them as assets.
 
