@@ -341,7 +341,7 @@ const SITE_DATA = {
                     "ar": "نظم تخطيط موارد المشاريع",
                     "en": "Enterprise Resource Planning Systems"
                   },
-                  "grade": 87
+                  "grade": 90
                 },
                 {
                   "name": {
