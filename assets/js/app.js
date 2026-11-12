@@ -472,6 +472,8 @@ function mergeContent(bundled, live) {
   Object.keys(live).forEach((k) => {
     if (k === 'ar' || k === 'en') {
       out[k] = Object.assign({}, out[k], live[k]);
+    } else if (k === 'meta') {
+      out.meta = Object.assign({}, out.meta, live.meta);
     } else {
       out[k] = live[k];
     }
@@ -495,6 +497,8 @@ async function init() {
     if (live) data = mergeContent(window.SITE_DATA, live);
   }
   state.data = data;
+  // Grades live under meta.grades in the live content; hand them to the grades UI.
+  if (data.meta && data.meta.grades) window.GRADES_DATA = data.meta.grades;
   applyTheme();
   render();
   onScroll();
