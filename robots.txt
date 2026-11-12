@@ -3,5 +3,7 @@ Allow: /
 Disallow: /admin
 Disallow: /admin.html
 Disallow: /api/
+# Preview/draft view is a personal editing state, not a public page
+Disallow: /*preview=1
 
 Sitemap: https://enmohammedanwr-coder.github.io/resume-website/sitemap.xml

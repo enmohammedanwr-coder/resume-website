@@ -73,8 +73,10 @@
        1) the low-opacity lock dot in the corner,
        2) Ctrl/Cmd + Shift + A,
        3) typing the Konami-style sequence "admin".
-     All of them just navigate to /admin, which enforces login server-side. */
-  var adminUrl = '/admin';
+     All of them just navigate to the dashboard, which enforces login
+     server-side. The URL is relative (not "/admin") so it also works when the
+     site is served from a subpath (GitHub Pages project site). */
+  var adminUrl = 'admin';
 
   function goAdmin() { window.location.href = adminUrl; }
 

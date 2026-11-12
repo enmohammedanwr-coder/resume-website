@@ -83,7 +83,7 @@ function render() {
   $('#projectsGrid').innerHTML = L.projects.items.map(p => `
     <article class="card reveal" data-project="${p.id}">
       <div class="card__media">
-        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
+        <img src="${p.image}" alt="${p.name}" loading="lazy" width="1280" height="800" onerror="this.style.display='none'">
         <span class="card__tech-badge tags">${p.tech.map(t => `<span class="tag">${t}</span>`).join('')}</span>
       </div>
       <div class="card__body">
