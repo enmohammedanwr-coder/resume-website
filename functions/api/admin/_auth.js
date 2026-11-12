@@ -77,7 +77,13 @@ export async function verifyPassword(env, password) {
     const iterations = parseInt(itersStr, 10);
     const salt = b64ToBytes(saltB64);
     const expected = b64ToBytes(hashB64);
-    const actual = await pbkdf2(password, salt, iterations, expected.length);
+    let actual;
+    try {
+      actual = await pbkdf2(password, salt, iterations, expected.length);
+    } catch {
+      // Workers WebCrypto rejects PBKDF2 iteration counts above 100000.
+      return false;
+    }
     return timingSafeEqual(actual, expected);
   }
 

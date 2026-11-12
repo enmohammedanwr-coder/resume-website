@@ -13,7 +13,7 @@ import getpass
 import hashlib
 import os
 
-ITERATIONS = 210_000
+ITERATIONS = 100_000  # Cloudflare Workers WebCrypto rejects PBKDF2 > 100000
 KEY_LEN = 32
 
 
