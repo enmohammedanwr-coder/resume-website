@@ -183,3 +183,11 @@ code { font-family: var(--mono); background: var(--surface-2); padding: .1rem .4
 /* ---------- CV file upload ---------- */
 .cvbox { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); padding: 1.1rem; }
 .cvbox__status { color: var(--text-soft); font-size: .9rem; margin: .3rem 0 .8rem; }
+
+/* ---------- Grades editor ---------- */
+.grade-level-block { border-color: var(--border-strong); }
+.grade-sem-block { margin: .7rem 0; }
+.grade-row { border: 1px dashed var(--border); border-radius: 12px; padding: .6rem .7rem; margin: .5rem 0; background: var(--surface-2); }
+.grade-row__foot { display: flex; align-items: flex-end; gap: .8rem; }
+.grade-row__foot .field { flex: 0 0 140px; margin: 0; }
+.grade-check { display: flex; align-items: center; gap: .5rem; margin: .7rem 0; color: var(--text-soft); font-size: .92rem; }
