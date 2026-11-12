@@ -1,0 +1,9 @@
+# Cloudflare Pages rewrites — pretty, stable URLs
+# (status 200 = serve the target while keeping the address bar path)
+
+/home     /home.html     200
+/admin    /admin.html    200
+
+# The old direct-CV path must never resolve. The PDF now lives only in KV and
+# is reachable solely through /api/cv-download with an approved token.
+/assets/cv/*   /404.html   404
