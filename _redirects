@@ -1,8 +1,8 @@
-# Cloudflare Pages rewrites — pretty, stable URLs
-# (status 200 = serve the target while keeping the address bar path)
-
-/home     /home.html     200
-/admin    /admin.html    200
+# Cloudflare Pages redirects.
+#
+# /home and /admin need no rule: Pages maps an extensionless path to the
+# matching .html file (so /home -> home.html). An explicit rewrite here created
+# a redirect loop, so it was removed.
 
 # The old direct-CV path must never resolve. The PDF now lives only in KV and
 # is reachable solely through /api/cv-download with an approved token.
