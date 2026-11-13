@@ -870,17 +870,32 @@ async function apiFetch(path, opts = {}) {
 
 async function checkSession() {
   try {
-    const { data } = await apiFetch('/api/admin/session');
-    return Boolean(data && data.ok);
-  } catch (e) { return false; }
+    const res = await fetch(API + '/api/admin/session', { credentials: 'same-origin' });
+    const ct = res.headers.get('content-type') || '';
+    // A non-JSON reply means there is no Pages Functions backend on this host
+    // (e.g. the static GitHub Pages copy) — login can never succeed there.
+    if (!ct.includes('application/json')) return { ok: false, backend: false };
+    const data = await res.json();
+    return { ok: Boolean(data && data.ok), backend: true };
+  } catch (e) { return { ok: false, backend: false }; }
 }
 
 async function doLogin(password) {
-  const { res, data } = await apiFetch('/api/admin/login', {
-    method: 'POST', body: JSON.stringify({ password })
-  });
+  let res, data;
+  try {
+    ({ res, data } = await apiFetch('/api/admin/login', {
+      method: 'POST', body: JSON.stringify({ password })
+    }));
+  } catch (e) {
+    return { ok: false, message: 'تعذّر الاتصال بالخادم. افتح اللوحة من رابط Cloudflare.' };
+  }
   if (res.ok && data && data.ok) return { ok: true };
   const err = data && data.error;
+  // No JSON error body => this host has no backend at all, so the password is
+  // not the problem. Say so instead of a misleading "wrong password".
+  if (!err) {
+    return { ok: false, message: 'هذه نسخة ثابتة بلا خادم — استخدم رابط Cloudflare للوحة التحكم.' };
+  }
   const msg = err === 'too_many_attempts' ? 'محاولات كثيرة. حاول لاحقاً.'
     : err === 'admin_not_configured' ? 'لم تُضبط كلمة مرور المدير على الخادم بعد.'
     : 'كلمة المرور غير صحيحة.';
@@ -1003,10 +1018,18 @@ function showApp() {
   initEditor();
 }
 async function boot() {
-  const ok = await checkSession();
-  if (ok) { showApp(); return; }
+  const s = await checkSession();
+  if (s.ok) { showApp(); return; }
   // Show login even if the API is unreachable (e.g. GitHub Pages preview).
   showLogin();
+  // On a host with no Functions backend, tell the owner why login can't work.
+  if (!s.backend) {
+    const note = $('#loginMsg');
+    if (note) {
+      note.textContent = 'هذه نسخة ثابتة بلا خادم (GitHub Pages). افتح اللوحة من رابط Cloudflare: resume-website-b7s.pages.dev/admin';
+      note.style.color = 'var(--warn, #f59e0b)';
+    }
+  }
   $('#loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const msg = $('#loginMsg'); msg.textContent = '';
