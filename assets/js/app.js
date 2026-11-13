@@ -77,8 +77,9 @@ function render() {
   // Nav
   $$('[data-nav]').forEach(el => { el.textContent = L.nav[el.dataset.nav]; });
 
-  // Hero buttons
-  $('#profilePhoto').src = M.photo;
+  // Hero photo comes from the same meta.photo the landing page uses.
+  if (window.applyProfilePhoto) window.applyProfilePhoto(M.photo);
+  else $('#profilePhoto').src = M.photo;
   $('#langLabel').textContent = state.lang === 'ar' ? 'EN' : 'ع';
   $('#year').textContent = new Date().getFullYear();
   $('#footerBuilt').textContent = L.footer.built;
