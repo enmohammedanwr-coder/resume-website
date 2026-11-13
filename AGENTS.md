@@ -25,6 +25,7 @@ uploads**, and a **request → approval → consent → signed download** flow.
 - `assets/js/app.js` — i18n, theme, rendering, modal, form validation, particles; `loadLiveContent()` fetches `/api/content` (KV) and falls back to `data.js`.
 - `assets/js/admin.js` — dashboard logic: session check, login/logout, edit AR/EN, image upload (canvas → JPEG dataURL), item CRUD, draft autosave (`localStorage.siteDraft`), **save to server** (`/api/admin/content`), requests list/approve/reject, CV PDF upload, optional GitHub publish.
 - `assets/js/landing.js` — landing theme/lang toggle + discreet admin entry.
+- `assets/js/profile-photo.js` — **shared profile-photo setter** (`window.applyProfilePhoto`). Every `<img data-profile-photo>` (landing welcome card + CV hero) is driven by the same `meta.photo`, so an upload from the dashboard updates both. On the CV page `app.js` is the setter; on pages without `app.js` the module reads `SITE_DATA.meta.photo` and then the live `/api/content` value.
 - `assets/img/` — project covers + `profile.jpg` placeholder.
 - `make_images.py`, `make_cv.py` — regenerate images / CV.
 
