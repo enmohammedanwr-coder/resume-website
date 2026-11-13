@@ -32,7 +32,7 @@ uploads**, and a **request → approval → consent → signed download** flow.
 All under `functions/api/`. Shared helpers: `_lib.js` (KV, JSON, HMAC signing, optional email, Turnstile) and `_middleware.js` (CORS, security headers, `OPTIONS`).
 
 **Auth** (`functions/api/admin/`):
-- `_auth.js` — `sameOrigin()` CSRF check (compares against the `Host` header so it works behind proxies), password verify (`ADMIN_PASSWORD_HASH` pbkdf2, or plaintext `ADMIN_PASSWORD`), KV-backed sessions (`sess:<id>`, 12h TTL) in an HttpOnly `cv_admin` cookie, login rate limit.
+- `_auth.js` — `sameOrigin()` CSRF check (compares against the `Host` header so it works behind proxies), password verify (`ADMIN_PASSWORD_HASH` pbkdf2, or plaintext `ADMIN_PASSWORD`), KV-backed sessions (`sess:<id>`, TTL from `SESSION_TTL_HOURS`; 0 = never expires) in an HttpOnly `cv_admin` cookie, login rate limit.
 - `login.js`, `logout.js`, `session.js`.
 
 **Content**:
@@ -88,6 +88,20 @@ functions dir `functions` (repo root). See `DEPLOY.md` for the full setup.
 Required Cloudflare config: KV binding `CV_KV`; env vars `ADMIN_PASSWORD_HASH`
 (preferred) or `ADMIN_PASSWORD`, `ADMIN_KEY`, `TOKEN_SECRET`; optional `SITE_URL`,
 `MAIL_API_KEY`, `MAIL_FROM`, `NOTIFY_EMAIL`, `TURNSTILE_SECRET`.
+
+> **Persistent (non-expiring) admin session:** `SESSION_TTL_HOURS` controls the
+> session lifetime. `0` (or negative) means "never expire" — the KV `sess:<id>`
+> record is written with no `expirationTtl` and the cookie gets a far-future
+> `Max-Age`. `/api/admin/session` also re-issues the cookie on every authenticated
+> check (rolling renewal), so the login keeps sliding forward and never lapses as
+> long as the owner visits at least once a year (browsers cap cookie `Max-Age` at
+> 400 days). Any positive value is hours, e.g. `12` = 12h; omit for the 12h default.
+
+> **Cloudflare env-var API trap:** `PATCH .../pages/projects/<name>` with a
+> `deployment_configs` body **wipes every `secret_text` value** (the API never
+> returns secret values, so echoing the GET response back writes them empty).
+> After any such PATCH, re-set `ADMIN_PASSWORD_HASH`, `ADMIN_KEY`, `TOKEN_SECRET`
+> in the same request, or edit env vars in the dashboard instead.
 
 > **PBKDF2 limit:** Cloudflare Workers WebCrypto rejects PBKDF2 iteration counts
 > **above 100000** (`Pbkdf2 failed: iteration counts above 100000 are not supported`).
