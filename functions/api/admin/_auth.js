@@ -13,8 +13,21 @@
 import { kvGetJson, kvPutJson, randomId, sha256Hex } from '../_lib.js';
 
 export const COOKIE_NAME = 'cv_admin';
-const SESSION_TTL_HOURS = 12;
+const DEFAULT_SESSION_TTL_HOURS = 12;
+/* When the owner opts into a persistent session (SESSION_TTL_HOURS=0) the KV
+   record gets no expiry and the cookie gets a far-future Max-Age. */
+const FOREVER_COOKIE_MAX_AGE = 315360000; // 10 years
 const enc = new TextEncoder();
+
+/* Session lifetime in seconds; 0 means "never expire".
+   Configure SESSION_TTL_HOURS on Cloudflare Pages to override the default. */
+function sessionTtlSeconds(env) {
+  const raw = env && env.SESSION_TTL_HOURS;
+  if (raw === undefined || raw === null || raw === '') return DEFAULT_SESSION_TTL_HOURS * 3600;
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return DEFAULT_SESSION_TTL_HOURS * 3600;
+  return n <= 0 ? 0 : Math.floor(n * 3600);
+}
 
 /* ---------- cookies ---------- */
 export function parseCookies(request) {
@@ -30,12 +43,13 @@ export function parseCookies(request) {
 
 export function sessionCookie(request, id, maxAgeSeconds) {
   const secure = new URL(request.url).protocol === 'https:';
+  const age = maxAgeSeconds > 0 ? maxAgeSeconds : FOREVER_COOKIE_MAX_AGE;
   const parts = [
     `${COOKIE_NAME}=${id}`,
     'Path=/',
     'HttpOnly',
     'SameSite=Strict',
-    `Max-Age=${maxAgeSeconds}`,
+    `Max-Age=${age}`,
   ];
   if (secure) parts.push('Secure');
   return parts.join('; ');
@@ -111,10 +125,12 @@ export async function createSession(env, request) {
     ua: (request.headers.get('user-agent') || '').slice(0, 200),
     ipHash: ip ? await sha256Hex(ip) : '',
   };
+  const ttlSeconds = sessionTtlSeconds(env);
   if (store) {
-    await kvPutJson(store, `sess:${id}`, session, { expirationTtl: SESSION_TTL_HOURS * 3600 });
+    const opts = ttlSeconds > 0 ? { expirationTtl: ttlSeconds } : undefined;
+    await kvPutJson(store, `sess:${id}`, session, opts);
   }
-  return { id, ttlSeconds: SESSION_TTL_HOURS * 3600 };
+  return { id, ttlSeconds };
 }
 
 export async function requireSession(env, request) {
